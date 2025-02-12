@@ -1,11 +1,14 @@
+import NavbarComponent from "./components/NavbarComponent"
+import Home from "./pages/Home"
 
 
 function App() {
 
   return (
-    <>
+    <>  
       <div>
-        <p className="">Hello</p>
+        <NavbarComponent/>
+        <Home/>
       </div>
     </>
   )
