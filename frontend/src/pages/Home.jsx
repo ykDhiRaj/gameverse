@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import GameCard from "../components/GameCard";
 
+
 const Home = () => {
   const [games, setGames] = useState([]);
   const [page, setPage] = useState(1);
@@ -13,7 +14,7 @@ const Home = () => {
     try {
       const response = await axios.get("https://api.rawg.io/api/games", {
         params: {
-          key: "f7c05ec6a5c243d69a2c50bce4be79ec",
+          key: import.meta.env.VITE_GAME_API_KEY,
           dates: "2019-09-01,2024-09-30",
           platforms: "18,1,7",
           page: page,

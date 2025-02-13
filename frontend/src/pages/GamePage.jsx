@@ -14,12 +14,12 @@ const GamePage = () => {
       try {
         const gameResponse = await axios.get(
           `https://api.rawg.io/api/games/${id}`,
-          { params: { key: "f7c05ec6a5c243d69a2c50bce4be79ec" } }
+          { params: { key: import.meta.env.VITE_GAME_API_KEY } }
         );
 
         const screenshotResponse = await axios.get(
           `https://api.rawg.io/api/games/${id}/screenshots`,
-          { params: { key: "f7c05ec6a5c243d69a2c50bce4be79ec" } }
+          { params: { key: import.meta.env.VITE_GAME_API_KEY } }
         );
 
         setGame(gameResponse.data);
