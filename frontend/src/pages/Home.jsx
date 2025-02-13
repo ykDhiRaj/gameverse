@@ -1,45 +1,19 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGames, setPage } from "../redux/gameSlice";
 import GameCard from "../components/GameCard";
 
-
 const Home = () => {
-  const [games, setGames] = useState([]);
-  const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
-  const fetchGames = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("https://api.rawg.io/api/games", {
-        params: {
-          key: import.meta.env.VITE_GAME_API_KEY,
-          dates: "2019-09-01,2024-09-30",
-          platforms: "18,1,7",
-          page: page,
-          page_size: 20,
-        },
-      });
-  
-      // Ensure uniqueness by filtering out duplicates
-      setGames((prevGames) => {
-        const newGames = response.data.results.filter(
-          (newGame) => !prevGames.some((prevGame) => prevGame.id === newGame.id)
-        );
-        return [...prevGames, ...newGames];
-      });
-    } catch (err) {
-      setError(err);
-    }
-    setLoading(false);
-  };  
+  const dispatch = useDispatch();
+  const { games, page, loading, error, fetchedPages } = useSelector((state) => state.games);
 
   useEffect(() => {
-    fetchGames();
-  }, [page]); // Fetch new data when `page` changes
+    if (!fetchedPages.includes(page)) {
+      dispatch(fetchGames(page));
+    }
+  }, [page, dispatch, fetchedPages]);
 
-  if (error) return <p className="text-red-500">Error: {error.message}</p>;
+  if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
     <div className="p-7 bg-[#121212] text-white mt-10">
@@ -53,7 +27,7 @@ const Home = () => {
       {/* Load More Button */}
       <div className="text-center mt-6">
         <button
-          onClick={() => setPage(page + 1)}
+          onClick={() => dispatch(setPage(page + 1))}
           disabled={loading}
           className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
         >
