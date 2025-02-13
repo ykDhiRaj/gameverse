@@ -4,6 +4,18 @@ import { useNavigate } from "react-router-dom";
 
 function GameCard({ game }) {
   const { id, platforms, background_image, name, released,rating,genres } = game;
+
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
+  
+   // Output: "July 17, 2020"
+  
   const navigate = useNavigate();
   const goTo = (id) =>{
       navigate(`/games/${id}`);
@@ -21,7 +33,7 @@ function GameCard({ game }) {
       />
       <div className="flex flex-col space-y-2">
         <p className="text-lg font-semibold text-white">{name}</p>
-        <p className="text-sm text-gray-200">Release Date: {released}</p> 
+        <p className="text-sm text-gray-200">Release Date: {formatDate(released)}</p> 
         <div>
           <h1 className="p-1 text-lg text-white">Rating:{" "}{rating}</h1>
         </div>

@@ -9,6 +9,15 @@ const GamePage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return new Intl.DateTimeFormat("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }).format(date);
+  };
+
   useEffect(() => {
     const fetchGameDetails = async () => {
       try {
@@ -54,7 +63,7 @@ const GamePage = () => {
           <div className="bg-black mt-5 p-10 rounded-lg hover:bg-gray-700 duration-300">
                 {/* First Row */}
                 <div className="grid grid-cols-2 gap-10 px-5">
-                    <p className="text-2xl"><strong>Released:</strong> {game.released}</p>
+                    <p className="text-2xl"><strong>Released:</strong> {formatDate(game.released)}</p>
                     <p className="text-2xl"><strong>Metacritic Score:</strong> {game.metacritic || "N/A"}</p>
                 </div>
 
