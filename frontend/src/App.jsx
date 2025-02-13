@@ -12,7 +12,7 @@ function App() {
         <NavbarComponent/>
         <Routes>
           <Route path="/" element={<Home/>}/>
-          <Route path="/game" element={<GamePage/>}/>
+          <Route path={`/games/:id`} element={<GamePage/>}/>
         </Routes>
     </BrowserRouter>
     </>

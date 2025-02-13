@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const GamePage = () => {
-  const { gameId } = useParams(); // Get game ID from URL params
+  const { id } = useParams(); // Get game ID from URL params
   const [game, setGame] = useState(null);
   const [screenshots, setScreenshots] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,12 +13,12 @@ const GamePage = () => {
     const fetchGameDetails = async () => {
       try {
         const gameResponse = await axios.get(
-          `https://api.rawg.io/api/games/41494`,
+          `https://api.rawg.io/api/games/${id}`,
           { params: { key: "f7c05ec6a5c243d69a2c50bce4be79ec" } }
         );
 
         const screenshotResponse = await axios.get(
-          `https://api.rawg.io/api/games/41494/screenshots`,
+          `https://api.rawg.io/api/games/${id}/screenshots`,
           { params: { key: "f7c05ec6a5c243d69a2c50bce4be79ec" } }
         );
 
@@ -32,7 +32,7 @@ const GamePage = () => {
     };
 
     fetchGameDetails();
-  }, [gameId]);
+  }, [id]);
 
   if (loading) return <p className="text-white text-center mt-10">Loading...</p>;
   if (error) return <p className="text-red-500 text-center mt-10">Error: {error.message}</p>;

@@ -1,7 +1,14 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+
+
 function GameCard({ game }) {
   const { id, platforms, background_image, name, released,rating,genres } = game;
+  const navigate = useNavigate();
+  const goTo = (id) =>{
+      navigate(`/games/${id}`);
+  }
 
   return (
     <li
@@ -30,8 +37,8 @@ function GameCard({ game }) {
           </h1>)}
         </div>
       </div>
-      <button className="mt-auto bg-gray-700 text-white rounded-md px-4 py-2 transition-colors duration-300 hover:bg-gray-900 hover:text-gray-300">
-        Games More Like This
+      <button onClick={()=>goTo(id)} className="mt-auto bg-gray-700 text-white rounded-md px-4 py-2 transition-colors duration-300 hover:bg-gray-900 hover:text-gray-300">
+        View more
       </button>
     </li>
   );
