@@ -16,7 +16,7 @@ const Home = () => {
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
-    <div className="p-7 bg-[#121212] text-white mt-10">
+    <div className="p-7 bg-[#161616] text-white mt-10">
       <h2 className="text-2xl font-bold mb-4 text-white">Game List</h2>
       <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {games.map((game) => (

@@ -1,5 +1,4 @@
 import React from "react";
-import { FaStar } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 
@@ -13,7 +12,7 @@ function GameCard({ game }) {
   return (
     <li
       key={id}
-      className="p-5 bg-gradient-to-t from-gray-800 to-black rounded-lg shadow-lg flex flex-col space-y-4 transform transition-transform duration-300 hover:scale-105"
+      className="p-5 bg-gradient-to-t from-gray-900 to-black rounded-lg shadow-lg flex flex-col space-y-4 transform transition-transform duration-300 hover:scale-102"
     >
       <img
         src={background_image}
