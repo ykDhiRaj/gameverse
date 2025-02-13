@@ -1,0 +1,40 @@
+import React from "react";
+import { FaStar } from "react-icons/fa";
+function GameCard({ game }) {
+  const { id, platforms, background_image, name, released,rating,genres } = game;
+
+  return (
+    <li
+      key={id}
+      className="p-5 bg-gradient-to-t from-gray-800 to-black rounded-lg shadow-lg flex flex-col space-y-4 transform transition-transform duration-300 hover:scale-105"
+    >
+      <img
+        src={background_image}
+        alt={name}
+        className="w-full h-40 object-cover rounded-md mb-2"
+      />
+      <div className="flex flex-col space-y-2">
+        <p className="text-lg font-semibold text-white">{name}</p>
+        <p className="text-sm text-gray-200">Release Date: {released}</p> 
+        <div>
+          <h1 className="p-1 text-lg text-white">Rating:{" "}{rating}</h1>
+        </div>
+        <div className="flex flex-auto gap-3 text-lg text-white">
+          Genres:
+          {genres.map((genre)=>
+          <h1
+            key={genre.id}
+            className="underline underline-offset-4 hover:text-gray-300 hover:cursor-pointer"
+          >
+            {genre.name}
+          </h1>)}
+        </div>
+      </div>
+      <button className="mt-auto bg-gray-700 text-white rounded-md px-4 py-2 transition-colors duration-300 hover:bg-gray-900 hover:text-gray-300">
+        Games More Like This
+      </button>
+    </li>
+  );
+}
+
+export default GameCard;
