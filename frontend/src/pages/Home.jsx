@@ -21,12 +21,19 @@ const Home = () => {
           page_size: 20,
         },
       });
-      setGames((prevGames) => [...prevGames, ...response.data.results]); // Append new data
+  
+      // Ensure uniqueness by filtering out duplicates
+      setGames((prevGames) => {
+        const newGames = response.data.results.filter(
+          (newGame) => !prevGames.some((prevGame) => prevGame.id === newGame.id)
+        );
+        return [...prevGames, ...newGames];
+      });
     } catch (err) {
       setError(err);
     }
     setLoading(false);
-  };
+  };  
 
   useEffect(() => {
     fetchGames();
