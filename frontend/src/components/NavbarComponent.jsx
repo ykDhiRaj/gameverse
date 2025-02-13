@@ -15,8 +15,8 @@ const NavbarComponent = () => {
         />
         <IoSearch size={25} cursor={'pointer'} />
       </div>
-      <div className="flex items-center justify-center gap-6">
-        <div className="flex gap-2">
+      <div className="flex items-center justify-center gap-8">
+        <div className="flex gap-3">
         <FaUserCircle size={25} cursor={'pointer'}  />
         <h1 className="text-lg">My library</h1>
         </div>

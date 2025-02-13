@@ -1,15 +1,20 @@
 import NavbarComponent from "./components/NavbarComponent"
+import GamePage from "./pages/GamePage"
 import Home from "./pages/Home"
+import { BrowserRouter,Routes, Route } from "react-router-dom"
 
 
 function App() {
 
   return (
-    <>  
-      <div>
+    <> 
+    <BrowserRouter>
         <NavbarComponent/>
-        <Home/>
-      </div>
+        <Routes>
+          <Route path="/" element={<Home/>}/>
+          <Route path="/game" element={<GamePage/>}/>
+        </Routes>
+    </BrowserRouter>
     </>
   )
 }
