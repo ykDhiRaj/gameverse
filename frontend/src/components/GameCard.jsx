@@ -25,7 +25,7 @@ function GameCard({ game }) {
         <div>
           <h1 className="p-1 text-lg text-white">Rating:{" "}{rating}</h1>
         </div>
-        <div className="flex flex-auto gap-3 text-lg text-white">
+        <div className="flex flex-wrap gap-2  text-lg text-white">
           Genres:
           {genres.map((genre)=>
           <h1
