@@ -2,25 +2,26 @@ import { useState } from 'react';
 import { Shield, Mail, KeyRound, GamepadIcon, ArrowRight, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import horizon from "../assets/horizon.jpg";
+import axios from 'axios';
 
 const SignupPage = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    password: '',
-    username: ''
-  });
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
-    console.log('Signup form submitted:', formData);
-  };
-
-  const handleInputChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
+    axios.post('http://localhost:3000/user/signup',{
+      username:username,
+      email:email,
+      password:password
+    }).then(function (response) {
+      if(response.status === 201){
+        alert("Account creation successful")
+      }
+    }).catch(function (error) {
+      console.log(error);
+    })
   };
 
   return (
@@ -61,8 +62,8 @@ const SignupPage = () => {
                 name="username"
                 type="text"
                 required
-                value={formData.username}
-                onChange={handleInputChange}
+                value={username}
+                onChange={(e)=>setUsername(e.target.value)}
                 className="mt-1 w-full bg-zinc-700 text-zinc-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-zinc-500 focus:outline-none transition-all duration-300 border border-zinc-600"
                 placeholder="Enter your username"
               />
@@ -78,8 +79,8 @@ const SignupPage = () => {
                 name="email"
                 type="email"
                 required
-                value={formData.email}
-                onChange={handleInputChange}
+                value={email}
+                onChange={(e)=>setEmail(e.target.value)}
                 className="mt-1 w-full bg-zinc-700 text-zinc-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-zinc-500 focus:outline-none transition-all duration-300 border border-zinc-600"
                 placeholder="Enter your email"
               />
@@ -95,8 +96,8 @@ const SignupPage = () => {
                 name="password"
                 type="password"
                 required
-                value={formData.password}
-                onChange={handleInputChange}
+                value={password}
+                onChange={(e)=>setPassword(e.target.value)}
                 className="mt-1 w-full bg-zinc-700 text-zinc-200 rounded-lg px-4 py-3 focus:ring-2 focus:ring-zinc-500 focus:outline-none transition-all duration-300 border border-zinc-600"
                 placeholder="Enter your password"
               />
