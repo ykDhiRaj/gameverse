@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-
+import { Star, GamepadIcon, Calendar, ChevronRight } from "lucide-react";
 
 function GameCard({ game }) {
-  const { id, platforms, background_image, name, released,rating,genres } = game;
+  const { id, platforms, background_image, name, released, rating, genres } = game;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -13,44 +13,74 @@ function GameCard({ game }) {
       day: "numeric",
     }).format(date);
   };
-  
-   // Output: "July 17, 2020"
-  
+
   const navigate = useNavigate();
-  const goTo = (id) =>{
-      navigate(`/games/${id}`);
-  }
+  const goTo = (id) => {
+    navigate(`/games/${id}`);
+  };
+
+  // Convert rating to stars (max 5)
+  const ratingStars = Math.round((rating / 2) * 2) / 2; // Rounds to nearest 0.5
 
   return (
     <li
       key={id}
-      className="p-5 bg-gradient-to-t from-gray-900 to-black rounded-lg shadow-lg flex flex-col space-y-4 transform transition-transform duration-300 hover:scale-102"
+      className="group relative overflow-hidden p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
     >
-      <img
-        src={background_image}
-        alt={name}
-        className="w-full h-40 object-cover rounded-md mb-2"
-      />
-      <div className="flex flex-col space-y-2">
-        <p className="text-lg font-semibold text-white">{name}</p>
-        <p className="text-sm text-gray-200">Release Date: {formatDate(released)}</p> 
-        <div>
-          <h1 className="p-1 text-lg text-white">Rating:{" "}{rating}</h1>
-        </div>
-        <div className="flex flex-wrap gap-2  text-lg text-white">
-          Genres:
-          {genres.map((genre)=>
-          <h1
-            key={genre.id}
-            className="underline underline-offset-4 hover:text-gray-300 hover:cursor-pointer"
-          >
-            {genre.name}
-          </h1>)}
+      {/* Image Container with Overlay */}
+      <div className="relative h-48 mb-4 overflow-hidden rounded-lg">
+        <div className="absolute inset-0 bg-black/30 group-hover:bg-black/20 transition-all duration-300" />
+        <img
+          src={background_image}
+          alt={name}
+          className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+        />
+        {/* Rating Badge */}
+        <div className="absolute top-2 right-2 bg-black/80 px-3 py-1 rounded-full flex items-center gap-1">
+          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+          <span className="text-yellow-400 font-bold">{rating}</span>
         </div>
       </div>
-      <button onClick={()=>goTo(id)} className="mt-auto bg-gray-700 text-white rounded-md px-4 py-2 transition-colors duration-300 hover:bg-gray-900 hover:text-gray-300">
-        View more
-      </button>
+
+      {/* Content */}
+      <div className="space-y-3">
+        {/* Title */}
+        <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-blue-400 transition-colors duration-300">
+          {name}
+        </h3>
+
+        {/* Release Date */}
+        <div className="flex items-center gap-2 text-gray-300">
+          <Calendar className="w-4 h-4" />
+          <span className="text-sm">{formatDate(released)}</span>
+        </div>
+
+        {/* Genres */}
+        <div className="flex flex-wrap gap-2">
+          {genres.map((genre) => (
+            <span
+              key={genre.id}
+              className="px-3 py-1 text-sm bg-gray-800/50 text-gray-300 rounded-full hover:bg-gray-700 transition-colors duration-200"
+            >
+              {genre.name}
+            </span>
+          ))}
+        </div>
+
+        {/* View More Button */}
+        <button
+          onClick={() => goTo(id)}
+          className="w-full mt-4 px-4 py-2.5 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 group"
+        >
+          <span>View Details</span>
+          <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
+        </button>
+      </div>
+
+      {/* Decorative Gaming Icon */}
+      <div className="absolute -right-6 -bottom-6 opacity-5 transform rotate-12">
+        <GamepadIcon className="w-24 h-24" />
+      </div>
     </li>
   );
 }
