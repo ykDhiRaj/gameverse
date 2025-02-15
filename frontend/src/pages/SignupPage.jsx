@@ -12,6 +12,7 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(formData);
     console.log('Signup form submitted:', formData);
   };
 
@@ -122,7 +123,13 @@ const SignupPage = () => {
           <p className="text-zinc-400">
             Already have an account?{' '}
             <Link to="/login" className="text-zinc-300 hover:text-white transition-colors duration-300 font-medium cursor-pointer">
-              Sign in
+              Login
+            </Link>
+          </p>
+          <p className="text-zinc-400">
+            Wanna go to homepage?{' '}
+            <Link to="/" className="text-zinc-300 hover:text-white transition-colors duration-300 font-medium cursor-pointer">
+              Homepage
             </Link>
           </p>
         </div>

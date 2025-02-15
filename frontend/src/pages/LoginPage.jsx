@@ -107,7 +107,13 @@ function LoginPage() {
           <p className="text-zinc-400">
             Don't have an account?{' '}
             <Link to="/signup" className="text-zinc-300 hover:text-white transition-colors duration-300 font-medium cursor-pointer">
-              Sign in
+              Sign up
+            </Link>
+          </p>
+          <p className="text-zinc-400">
+            Wanna go to homepage?{' '}
+            <Link to="/" className="text-zinc-300 hover:text-white transition-colors duration-300 font-medium cursor-pointer">
+              Homepage
             </Link>
           </p>
         </div>
