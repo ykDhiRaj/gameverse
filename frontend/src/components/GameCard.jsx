@@ -1,9 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Star, GamepadIcon, Calendar, ChevronRight } from "lucide-react";
+import { Star, GamepadIcon, Calendar, ChevronRight, BookmarkPlus, Heart } from "lucide-react";
 
 function GameCard({ game }) {
-  const { id, platforms, background_image, name, released, rating, genres } = game;
+  const { id, background_image, name, released, rating, genres } = game;
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,18 +36,33 @@ function GameCard({ game }) {
           className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
         />
         {/* Rating Badge */}
-        <div className="absolute top-2 right-2 bg-black/80 px-3 py-1 rounded-full flex items-center gap-1">
-          <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
-          <span className="text-yellow-400 font-bold">{rating}</span>
+        <div className="absolute top-2 right-2 flex items-center gap-2">
+          <div className="bg-black/80 px-3 py-1 rounded-full flex items-center gap-1">
+            <Star className="w-4 h-4 text-yellow-400 fill-yellow-400" />
+            <span className="text-yellow-400 font-bold">{rating}</span>
+          </div>
         </div>
       </div>
 
       {/* Content */}
       <div className="space-y-3">
-        {/* Title */}
-        <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-blue-400 transition-colors duration-300">
-          {name}
-        </h3>
+        {/* Title and Action Buttons */}
+        <div className="flex items-center justify-between">
+          <h3 className="text-xl font-bold text-white tracking-wide group-hover:text-blue-400 transition-colors duration-300">
+            {name}
+          </h3>
+          <div className="flex items-center gap-2">
+            {/* Wishlist Button */}
+            <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+              <BookmarkPlus className="w-6 h-6 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
+            </button>
+
+            {/* Favorites Button */}
+            <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+              <Heart className="w-6 h-6 text-gray-400 group-hover:text-pink-500 transition-colors duration-300" />
+            </button>
+          </div>
+        </div>
 
         {/* Release Date */}
         <div className="flex items-center gap-2 text-gray-300">
