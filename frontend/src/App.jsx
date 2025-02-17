@@ -6,17 +6,21 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 
+
 function App() {
   return (
-    <BrowserRouter>
-      <MainLayout />
-    </BrowserRouter>
+    
+      <BrowserRouter>
+        <MainLayout />
+      </BrowserRouter>
+    
   );
 }
 
 function MainLayout() {
   const location = useLocation();
   const hideNavbarRoutes = ["/login", "/signup"];
+  
 
   return (
     <>
@@ -25,7 +29,7 @@ function MainLayout() {
         <Route path="/" element={<Home />} />
         <Route path="/games/:id" element={<GamePage />} />
         <Route path="/profile" element={<ProfilePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/login" element={<LoginPage/>} />
         <Route path="/signup" element={<SignupPage />} />
       </Routes>
     </>

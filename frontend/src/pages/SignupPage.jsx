@@ -3,25 +3,49 @@ import { Shield, Mail, KeyRound, GamepadIcon, ArrowRight, User } from 'lucide-re
 import { Link } from 'react-router-dom';
 import horizon from "../assets/horizon.jpg";
 import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/user/signup',{
-      username:username,
-      email:email,
-      password:password
-    }).then(function (response) {
-      if(response.status === 201){
-        alert("Account creation successful")
+  
+    try {
+      const response = await axios.post('http://localhost:3000/user/signup', {
+        username: username,
+        email: email,
+        password: password
+      });
+  
+      if (response.status === 201) {
+        toast.success("Account creation successful", {
+          theme: 'dark',
+          position: "top-right",
+        });
+        localStorage.setItem('token', response.data.token)
+        setEmail('');
+        setUsername('');
+        setPassword('');
+        navigate('/');
       }
-    }).catch(function (error) {
-      console.log(error);
-    })
+    } catch (error) {
+      if (error.response && error.response.status === 400) {
+        toast.error(error.response.data.msg || "User already exists", {
+          theme: 'dark',
+          position: "top-right",
+        });
+      } else {
+        toast.error("Something went wrong. Please try again.", {
+          theme: 'dark',
+          position: "top-right",
+        });
+      }
+    }
   };
 
   return (

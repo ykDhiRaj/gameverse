@@ -3,22 +3,33 @@ import { Shield, Mail, KeyRound, GamepadIcon, ArrowRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import gow2 from "../assets/gow2.jpg" 
 import axios from 'axios';
+import {toast} from "react-toastify"
+import { useNavigate } from 'react-router-dom';
+
 
 function LoginPage() {
   const [email, setEmail] =  useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
+ 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/user/login',{
-      email:email,
-      password:password
-    }).then(function (response) {
-      console.log(response);
-      // use reapop, react toast notification,
-    }).catch(function (error) {
-      console.log(error);
+    axios.post('http://localhost:3000/user/login', {
+      email,
+      password
     })
+    .then((response) => {
+      localStorage.setItem("token", response.data.token);
+      
+      toast.success("Successfully logged in", { theme: 'dark', type:'success' });
+      
+      setEmail('');
+      setPassword('');
+      navigate('/');
+    })
+    .catch((error) => {
+      toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
+    });
   };
 
   return (
