@@ -39,10 +39,14 @@ const gamesSlice = createSlice({
     fetchedPages: [],
     loading: false,
     error: null,
+    searchQuery: "",
   },
   reducers: {
     setPage: (state, action) => {
       state.page = action.payload;
+    },
+    setSearchQuery: (state, action) => {
+      state.searchQuery = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -73,5 +77,5 @@ const gamesSlice = createSlice({
 });
 
 
-export const { setPage } = gamesSlice.actions;
+export const { setPage, setSearchQuery } = gamesSlice.actions;
 export default gamesSlice.reducer;

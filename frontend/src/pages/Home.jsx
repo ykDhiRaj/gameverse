@@ -7,10 +7,10 @@ import DropDown from "../components/DropDown";
 
 const Home = () => {
   const dispatch = useDispatch();
-  const { games, page, loading, error, fetchedPages } = useSelector(
+  const { games, page, loading, error, fetchedPages, searchQuery } = useSelector(
     (state) => state.games
   );
-  const [genre, setGenre] = useState("");
+  const [selectedGenres, setSelectedGenres] = useState([]);
   const [ordering, setOrdering] = useState("");
 
   const uniqueGenres = [...new Set(games.flatMap(game => 
@@ -25,6 +25,45 @@ const Home = () => {
     "Popularity",
     "Average rating"
   ];
+
+  const handleGenreSelect = (genre) => {
+    setSelectedGenres(prev => {
+      if (prev.includes(genre)) {
+        return prev.filter(g => g !== genre);
+      }
+      return [...prev, genre];
+    });
+  };
+
+  // Filter and sort games
+  const filteredAndSortedGames = games
+    .filter(game => {
+      // Search filter
+      const matchesSearch = searchQuery 
+        ? game.name.toLowerCase().includes(searchQuery.toLowerCase())
+        : true;
+      
+      // Genre filter
+      const matchesGenres = selectedGenres.length === 0 
+        ? true 
+        : game.genres.some(genre => selectedGenres.includes(genre.name));
+      
+      return matchesSearch && matchesGenres;
+    })
+    .sort((a, b) => {
+      switch (ordering.toLowerCase()) {
+        case 'name':
+          return a.name.localeCompare(b.name);
+        case 'release date':
+          return new Date(b.released) - new Date(a.released);
+        case 'popularity':
+          return b.added - a.added;
+        case 'average rating':
+          return b.rating - a.rating;
+        default:
+          return 0;
+      }
+    });
 
   useEffect(() => {
     if (!fetchedPages.includes(page)) {
@@ -44,20 +83,22 @@ const Home = () => {
           <div className="flex gap-4 mb-6">
             <DropDown 
               options={uniqueGenres}
-              onSelect={setGenre}
-              selectedOption={genre}
-              label="Genre"
+              onSelect={handleGenreSelect}
+              selectedOptions={selectedGenres}
+              label="Genres"
+              multiple={true}
             />
             <DropDown 
               options={orderingOptions}
               onSelect={setOrdering}
               selectedOption={ordering}
               label="Order by"
+              multiple={false}
             />
           </div>
 
           <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {games.map((game) => (
+            {filteredAndSortedGames.map((game) => (
               <GameCard key={game.id} game={game} />
             ))}
           </ul>
