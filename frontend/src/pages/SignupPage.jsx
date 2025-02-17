@@ -5,47 +5,53 @@ import horizon from "../assets/horizon.jpg";
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import {useDispatch} from 'react-redux'
+import { addUser } from '../redux/userSlice';
 
 const SignupPage = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-  
-    try {
-      const response = await axios.post('http://localhost:3000/user/signup', {
+     axios.post('http://localhost:3000/user/signup', {
         username: username,
         email: email,
         password: password
-      });
+      }).then((response)=>{
+        console.log(response);
+        if (response.status === 201) {
+          toast.success("Account creation successful", {
+            theme: 'dark',
+            position: "top-right",
+          });
+          localStorage.setItem('token', response.data.token)
+
+          const userData = {email, token:response.data.token}
+          dispatch(addUser(userData));
   
-      if (response.status === 201) {
-        toast.success("Account creation successful", {
-          theme: 'dark',
-          position: "top-right",
-        });
-        localStorage.setItem('token', response.data.token)
-        setEmail('');
-        setUsername('');
-        setPassword('');
-        navigate('/');
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 400) {
-        toast.error(error.response.data.msg || "User already exists", {
-          theme: 'dark',
-          position: "top-right",
-        });
-      } else {
-        toast.error("Something went wrong. Please try again.", {
-          theme: 'dark',
-          position: "top-right",
-        });
-      }
-    }
+          setEmail('');
+          setUsername('');
+          setPassword('');
+          navigate('/');
+        }
+      }).catch((error)=>{
+        console.log(error);
+        if (error.response && error.response.status === 400) {
+          toast.error(error.response.data.msg || "User already exists", {
+            theme: 'dark',
+            position: "top-right",
+          });
+        } else {
+          toast.error("Something went wrong. Please try again.", {
+            theme: 'dark',
+            position: "top-right",
+          });
+        }
+      });
   };
 
   return (

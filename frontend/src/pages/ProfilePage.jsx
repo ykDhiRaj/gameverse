@@ -10,10 +10,18 @@ import {
   LogOut 
 } from 'lucide-react';
 import GameCard from '../components/GameCard';
+import { useDispatch } from 'react-redux';
+import { removeUser } from '../redux/userSlice';
+
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('favorites');
   const [showSettings, setShowSettings] = useState(false);
+  const dispatch = useDispatch();
+
+  const handleLogout = ()=>{
+    dispatch(removeUser());
+  }
 
   // Mock data - replace with actual data from your state management
   const mockUser = {
@@ -74,7 +82,7 @@ const ProfilePage = () => {
                 </button>
                 <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700/50 transition-colors text-red-400">
                   <LogOut className="w-5 h-5" />
-                  <span>Sign Out</span>
+                  <span onClick={handleLogout}>Log Out</span>
                 </button>
               </div>
             </div>

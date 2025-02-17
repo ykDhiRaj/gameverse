@@ -5,12 +5,15 @@ import gow2 from "../assets/gow2.jpg"
 import axios from 'axios';
 import {toast} from "react-toastify"
 import { useNavigate } from 'react-router-dom';
+import {useDispatch} from 'react-redux';
+import { addUser } from '../redux/userSlice';
 
 
 function LoginPage() {
   const [email, setEmail] =  useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
  
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +25,9 @@ function LoginPage() {
       localStorage.setItem("token", response.data.token);
       
       toast.success("Successfully logged in", { theme: 'dark', type:'success' });
+
+      const userData = {email, token:response.data.token}
+      dispatch(addUser(userData));
       
       setEmail('');
       setPassword('');

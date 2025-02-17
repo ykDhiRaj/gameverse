@@ -18,9 +18,13 @@ const NavbarComponent = () => {
     }
   };
 
+  const handleClick = ()=>{
+    navigate('/');
+  }
+
   return (
     <div className="fixed top-0 left-0 w-full bg-[#161616] h-16 text-white flex items-center justify-between px-5 z-50">
-      <h1 className="text-3xl cursor-pointer">Gameverse</h1>
+      <h1 onClick={handleClick} className="text-3xl cursor-pointer">Gameverse</h1>
       <div className="flex items-center justify-center gap-2">
         <input
           className="bg-[#3B3B3B] p-2 px-3 rounded-4xl w-[42rem] outline-none"
