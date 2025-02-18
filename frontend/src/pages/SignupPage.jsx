@@ -30,7 +30,7 @@ const SignupPage = () => {
           });
           localStorage.setItem('token', response.data.token)
 
-          const userData = {email, token:response.data.token}
+          const userData = {email}
           dispatch(addUser(userData));
   
           setEmail('');

@@ -6,6 +6,7 @@ import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import { useSelector } from "react-redux";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 
 function App() {
@@ -32,9 +33,12 @@ function MainLayout() {
         <Route path="/" element={<Home />} />
         <Route path="/games/:id" element={<GamePage />} />
 
-        <Route path="/profile" element={user? <ProfilePage />:<Navigate to={'/login'}/>} />
         <Route path="/login" element={user? <Navigate to={'/'}/>:<LoginPage/>} />
         <Route path="/signup" element={user? <Navigate to={'/'}/>:<SignupPage />} />
+        {/* <Route path="/profile" element={user? <ProfilePage />:<Navigate to={'/login'}/>} /> */}
+        <Route element={<ProtectedRoute/>}>
+            <Route path="/profile" element={<ProfilePage/>}/>
+        </Route>
       </Routes>
     </>
   );

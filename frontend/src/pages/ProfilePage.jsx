@@ -12,15 +12,19 @@ import {
 import GameCard from '../components/GameCard';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../redux/userSlice';
+import { useNavigate } from 'react-router-dom';
 
 
 const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('favorites');
   const [showSettings, setShowSettings] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const handleLogout = ()=>{
+    localStorage.removeItem("token"); 
     dispatch(removeUser());
+    navigate('/');
   }
 
   // Mock data - replace with actual data from your state management

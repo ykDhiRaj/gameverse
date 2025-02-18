@@ -26,7 +26,7 @@ function LoginPage() {
       
       toast.success("Successfully logged in", { theme: 'dark', type:'success' });
 
-      const userData = {email, token:response.data.token}
+      const userData = {email}
       dispatch(addUser(userData));
       
       setEmail('');
