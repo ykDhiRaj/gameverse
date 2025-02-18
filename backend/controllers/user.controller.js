@@ -119,10 +119,25 @@ const addToFavorites = async (req, res) => {
   }
 };
 
+// Add this function to your existing user.controller.js
+const getUserData = async (req, res) => {
+  try {
+    const userId = req.user.id; // Assuming authentication middleware sets req.user
+    const user = await User.findById(userId).select('-password'); // Exclude password
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error });
+  }
+};
+
 module.exports = {
   signup,
   login,
   deleteAccount,
   addToWishlist,
   addToFavorites,
+  getUserData,
 };
