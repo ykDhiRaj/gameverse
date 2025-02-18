@@ -1,8 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, GamepadIcon, Calendar, ChevronRight, BookmarkPlus, Heart } from "lucide-react";
+import axios from "axios";
 
-function GameCard({ game }) {
+function GameCard({ game, isInWishlist, isInFavorites }) {
   const { id, background_image, name, released, rating, genres } = game;
 
   const formatDate = (dateString) => {
@@ -15,11 +16,27 @@ function GameCard({ game }) {
   };
 
   const navigate = useNavigate();
-  const goTo = (id) => {
-    navigate(`/games/${id}`);
+
+  const handleWishlist = async () => {
+    try {
+      await axios.post('http://localhost:3000/user/wishlist', { gameId: id }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.error("Error adding to wishlist:", error);
+    }
   };
 
-  // Convert rating to stars (max 5)
+  const handleFavorites = async () => {
+    try {
+      await axios.post('http://localhost:3000/user/favorites', { gameId: id }, {
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+    }
+  };
+
   const ratingStars = Math.round((rating / 2) * 2) / 2; // Rounds to nearest 0.5
 
   return (
@@ -52,15 +69,24 @@ function GameCard({ game }) {
             {name}
           </h3>
           <div className="flex items-center gap-2">
-            {/* Wishlist Button */}
-            <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
-              <BookmarkPlus className="w-6 h-6 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
-            </button>
-
-            {/* Favorites Button */}
-            <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
-              <Heart className="w-6 h-6 text-gray-400 group-hover:text-pink-500 transition-colors duration-300" />
-            </button>
+            {isInWishlist ? (
+              <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+                <BookmarkPlus className="w-6 h-6 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
+              </button>
+            ) : (
+              <button onClick={handleWishlist} className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+                <BookmarkPlus className="w-6 h-6 text-gray-400 group-hover:text-green-500 transition-colors duration-300" />
+              </button>
+            )}
+            {isInFavorites ? (
+              <button className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+                <Heart className="w-6 h-6 text-gray-400 group-hover:text-pink-500 transition-colors duration-300" />
+              </button>
+            ) : (
+              <button onClick={handleFavorites} className="p-2 bg-gray-800/50 rounded-full hover:bg-gray-700 transition-colors duration-300 group">
+                <Heart className="w-6 h-6 text-gray-400 group-hover:text-pink-500 transition-colors duration-300" />
+              </button>
+            )}
           </div>
         </div>
 
@@ -84,7 +110,7 @@ function GameCard({ game }) {
 
         {/* View More Button */}
         <button
-          onClick={() => goTo(id)}
+          onClick={() => navigate(`/games/${id}`)}
           className="w-full mt-4 px-4 py-2.5 bg-gray-700/50 hover:bg-gray-700 text-white rounded-lg flex items-center justify-center gap-2 transition-colors duration-300 group"
         >
           <span>View Details</span>

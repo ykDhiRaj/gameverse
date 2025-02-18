@@ -1,5 +1,5 @@
 const express = require('express');
-const{login,signup,addToFavorites,addToWishlist,deleteAccount}  = require('../controllers/user.controller');
+const{login,signup,addToFavorites,addToWishlist,deleteAccount,getUserData}  = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -12,5 +12,6 @@ router.post("/login", login);
 router.delete("/delete", authMiddleware, deleteAccount);
 router.post("/wishlist", authMiddleware, addToWishlist);
 router.post("/favorites", authMiddleware, addToFavorites);
+router.get("/userprofile", authMiddleware, getUserData);
 
 module.exports = router;
