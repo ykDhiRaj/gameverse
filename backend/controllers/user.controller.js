@@ -133,6 +133,48 @@ const getUserData = async (req, res) => {
   }
 };
 
+// Remove game from wishlist
+const removeFromWishlist = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { gameId } = req.body;
+
+    if (!gameId) {
+      return res.status(400).json({ msg: "Game ID is required" });
+    }
+
+    const user = await User.findByIdAndUpdate(userId, { $pull: { wishlist: gameId } }, { new: true });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.status(200).json({ msg: "Game removed from wishlist" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error });
+  }
+};
+
+// Remove game from favorites
+const removeFromFavorites = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { gameId } = req.body;
+
+    if (!gameId) {
+      return res.status(400).json({ msg: "Game ID is required" });
+    }
+
+    const user = await User.findByIdAndUpdate(userId, { $pull: { favorites: gameId } }, { new: true });
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    res.status(200).json({ msg: "Game removed from favorites" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error });
+  }
+};
+
 module.exports = {
   signup,
   login,
@@ -140,4 +182,6 @@ module.exports = {
   addToWishlist,
   addToFavorites,
   getUserData,
+  removeFromWishlist,
+  removeFromFavorites
 };

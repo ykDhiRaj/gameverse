@@ -42,7 +42,7 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
   return (
     <li
       key={id}
-      className="group relative overflow-hidden p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
+      className="list-none group relative overflow-hidden p-4 bg-gradient-to-br from-gray-900 via-gray-800 to-black rounded-xl shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1"
     >
       {/* Image Container with Overlay */}
       <div className="relative h-48 mb-4 overflow-hidden rounded-lg">

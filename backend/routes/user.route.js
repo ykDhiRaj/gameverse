@@ -1,5 +1,5 @@
 const express = require('express');
-const{login,signup,addToFavorites,addToWishlist,deleteAccount,getUserData}  = require('../controllers/user.controller');
+const{login,signup,addToFavorites,addToWishlist,deleteAccount,getUserData,removeFromFavorites,removeFromWishlist}  = require('../controllers/user.controller');
 const authMiddleware = require('../middlewares/authMiddleware');
 
 const router = express.Router();
@@ -13,5 +13,11 @@ router.delete("/delete", authMiddleware, deleteAccount);
 router.post("/wishlist", authMiddleware, addToWishlist);
 router.post("/favorites", authMiddleware, addToFavorites);
 router.get("/userprofile", authMiddleware, getUserData);
+
+// Remove game from wishlist
+router.delete("/wishlist/remove", authMiddleware, removeFromWishlist);
+
+// Remove game from favorites
+router.delete("/favorites/remove", authMiddleware, removeFromFavorites);
 
 module.exports = router;
