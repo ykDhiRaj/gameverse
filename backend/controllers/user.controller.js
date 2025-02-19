@@ -141,7 +141,12 @@ const getUserData = async (req, res) => {
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
-    res.status(200).json(user);
+    const userData = {
+      ...user.toObject(),
+      wishlistCount: user.wishlist.length,
+      favoritesCount: user.favorites.length,
+    };
+    res.status(200).json(userData);
   } catch (error) {
     res.status(500).json({ msg: "Server error", error });
   }

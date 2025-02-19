@@ -24,9 +24,9 @@ function SideBarComponent() {
     { icon: IoBookmark, label: "Wishlist", path: "/wishlist" },
     user ? 
     { icon: FaUser, label: "Profile", path: "/profile" } : null,
-    { icon: IoSettings, label: "Settings", path: "/settings" },
     !user ? 
-      { icon: IoLogIn, label: "Login", path: "/login" } : null
+    { icon: IoLogIn, label: "Login", path: "/login" } : null,
+    { icon: IoSettings, label: "Settings", path: "/settings" }
   ].filter(Boolean);
 
   const handleNavigation = (path) => {
