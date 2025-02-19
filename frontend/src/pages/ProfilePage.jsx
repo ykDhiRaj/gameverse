@@ -21,8 +21,14 @@ const ProfilePage = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [userData, setUserData] = useState(null);
   const [games, setGames] = useState([]);
+  const [wishlist, setWishlist] = useState([]);
+  const [favorites, setFavorites] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
+  console.log(wishlist);
+  console.log(favorites)
+  console.log(activeTab)
   
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -37,14 +43,10 @@ const ProfilePage = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUserData(response.data);
+        setWishlist(response.data.wishlist);
+        setFavorites(response.data.favorites);
         fetchGames(response.data[activeTab]);
-
-        // Generate avatar with initials
-        const userInitials = getInitials(response.data.username);
-        const avatar = createAvatar(initials, {
-          seed: userInitials,
-        });
-        setSvg(avatar.toString());
+        
       } catch (error) {
         console.error("Error fetching user data:", error);
       }

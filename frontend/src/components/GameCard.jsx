@@ -2,6 +2,7 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Star, GamepadIcon, Calendar, ChevronRight, BookmarkPlus, Heart } from "lucide-react";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function GameCard({ game, isInWishlist, isInFavorites }) {
   const { id, background_image, name, released, rating, genres } = game;
@@ -19,23 +20,34 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
 
   const handleWishlist = async () => {
     try {
-      await axios.post('http://localhost:3000/user/wishlist', { gameId: id }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/user/wishlist",
+        { gameId: id },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      console.log(response.data.msg); // This should work correctly
+      toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
-      console.error("Error adding to wishlist:", error);
+      console.log(error.response?.data?.msg || "An error occurred");
+      toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
     }
   };
-
+  
   const handleFavorites = async () => {
     try {
-      await axios.post('http://localhost:3000/user/favorites', { gameId: id }, {
-        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-      });
+      const response = await axios.post(
+        "http://localhost:3000/user/favorites",
+        { gameId: id },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      console.log(response.data.msg); // This should work correctly
+      toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
-      console.error("Error adding to favorites:", error);
+      console.log(error.response?.data?.msg || "An error occurred");
+      toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
     }
   };
+  
 
   const ratingStars = Math.round((rating / 2) * 2) / 2; // Rounds to nearest 0.5
 

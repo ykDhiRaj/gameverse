@@ -87,10 +87,17 @@ const addToWishlist = async (req, res) => {
       return res.status(400).json({ msg: "Game ID is required" });
     }
 
-    const user = await User.findByIdAndUpdate(userId, { $addToSet: { wishlist: gameId } }, { new: true });
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
+
+    if (user.wishlist.includes(gameId)) {
+      return res.status(400).json({ msg: "Game already exists in wishlist" });
+    }
+
+    user.wishlist.push(gameId);
+    await user.save();
 
     res.status(201).json({ msg: "Game added to wishlist" });
   } catch (error) {
@@ -108,10 +115,17 @@ const addToFavorites = async (req, res) => {
       return res.status(400).json({ msg: "Game ID is required" });
     }
 
-    const user = await User.findByIdAndUpdate(userId, { $addToSet: { favorites: gameId } }, { new: true });
+    const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
+
+    if (user.favorites.includes(gameId)) {
+      return res.status(400).json({ msg: "Game already exists in favorites" });
+    }
+
+    user.favorites.push(gameId);
+    await user.save();
 
     res.status(201).json({ msg: "Game added to favorites" });
   } catch (error) {
