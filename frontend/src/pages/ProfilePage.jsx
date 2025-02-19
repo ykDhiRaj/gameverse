@@ -7,9 +7,12 @@ import {
   Gamepad2, 
   User, 
   Edit, 
-  LogOut 
+  LogOut,
+  BookmarkPlus
 } from 'lucide-react';
 import GameCard from '../components/GameCard';
+import WishlistCard from '../components/WishlistCard';
+import FavoritesCard from '../components/FavoritesCard';
 import { useDispatch } from 'react-redux';
 import { removeUser } from '../redux/userSlice';
 import { useNavigate } from 'react-router-dom';
@@ -21,14 +24,17 @@ const ProfilePage = () => {
   const [showSettings, setShowSettings] = useState(false);
   const [userData, setUserData] = useState(null);
   const [games, setGames] = useState([]);
-  const [wishlist, setWishlist] = useState([]);
-  const [favorites, setFavorites] = useState([]);
+  // const [wishlist, setWishlist] = useState([]);
+  // const [favorites, setFavorites] = useState([]);
+  const [fetchedwishlist, setfetchedWishlist] = useState([]);
+  const [fetchedfavorites, setfetchedFavorites] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  console.log(wishlist);
-  console.log(favorites)
-  console.log(activeTab)
+  console.log(fetchedfavorites);
+  console.log(fetchedwishlist)
+  // console.log(activeTab);
+  // console.log(games);
   
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -43,9 +49,9 @@ const ProfilePage = () => {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         setUserData(response.data);
-        setWishlist(response.data.wishlist);
-        setFavorites(response.data.favorites);
-        fetchGames(response.data[activeTab]);
+        fetchfavGames(response.data.favorites);
+        fetchwishGames(response.data.wishlist);
+        // fetchGames(response.data[activeTab]);
         
       } catch (error) {
         console.error("Error fetching user data:", error);
@@ -53,9 +59,21 @@ const ProfilePage = () => {
     };
 
     fetchUserData();
-  }, [activeTab]);
+  }, []);
 
-  const fetchGames = async (gameIds) => {
+  const fetchfavGames = async (gameIds) => {
+    const fetchedfavGames = await Promise.all(
+      gameIds.map(async (gameId) => {
+        const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
+          params: { key: import.meta.env.VITE_GAME_API_KEY },
+        });
+        return response.data;
+      })
+    );
+    setfetchedFavorites(fetchedfavGames);
+  };
+
+  const fetchwishGames = async (gameIds) => {
     const fetchedGames = await Promise.all(
       gameIds.map(async (gameId) => {
         const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
@@ -64,8 +82,33 @@ const ProfilePage = () => {
         return response.data;
       })
     );
-    setGames(fetchedGames);
+    setfetchedWishlist(fetchedGames);
   };
+
+  const handleRemoveFromWishlist = async (id) => {
+    try {
+      await axios.delete('http://localhost:3000/user/wishlist/remove', {
+        data: { gameId: id },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setGames((prevGames) => prevGames.filter((game) => game.id !== id));
+    } catch (error) {
+      console.error("Error removing from wishlist:", error);
+    }
+  };
+
+  const handleRemoveFromFavorites = async (id) => {
+    try {
+      await axios.delete('http://localhost:3000/user/favorites/remove', {
+        data: { gameId: id },
+        headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+      });
+      setGames((prevGames) => prevGames.filter((game) => game.id !== id));
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+    }
+  };
+
   if (!userData) return <div>Loading...</div>;
 
   return (
@@ -81,7 +124,11 @@ const ProfilePage = () => {
               <div className="flex items-center gap-4 text-gray-300">
                 <div className="flex items-center gap-2">
                   <Gamepad2 className="w-5 h-5 text-blue-400" />
-                  <span>{userData.gamesCount} Games</span>
+                  <span>{userData.favoritesCount} Favorites</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Gamepad2 className="w-5 h-5 text-blue-400" />
+                  <span>{userData.wishlistCount} Wishlist</span>
                 </div>
               </div>
             </div>
@@ -123,7 +170,7 @@ const ProfilePage = () => {
                 : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'
             }`}
           >
-            <Star className={`w-5 h-5 ${activeTab === 'favorites' ? 'text-yellow-300' : ''}`} />
+            <Heart className={`w-5 h-5 ${activeTab === 'favorites' ? 'text-red-400' : ''}`} />
             Favorites
           </button>
           <button
@@ -134,7 +181,7 @@ const ProfilePage = () => {
                 : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'
             }`}
           >
-            <Heart className={`w-5 h-5 ${activeTab === 'wishlist' ? 'text-red-400' : ''}`} />
+            <BookmarkPlus className={`w-5 h-5 ${activeTab === 'wishlist' ? 'text-green-400' : ''}`} />
             Wishlist
           </button>
         </div>
@@ -153,14 +200,21 @@ const ProfilePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {games.map((game) => (
-              <GameCard 
-                key={game.id} 
-                game={game} 
-                isInWishlist={userData.wishlist.includes(game.id)} 
-                isInFavorites={userData.favorites.includes(game.id)} 
-              />
-            ))}
+             {activeTab === 'favorites' ? 
+              fetchedfavorites.map((fav)=>(
+              <FavoritesCard 
+              key={fav.id} 
+              game={fav} 
+              onRemove={handleRemoveFromFavorites} 
+            />
+              ))
+               : fetchedwishlist.map((wish)=>(<WishlistCard 
+                key={wish.id} 
+                game={wish} 
+                onRemove={handleRemoveFromWishlist} 
+              />))
+                
+            }
           </div>
         )}
       </div>
