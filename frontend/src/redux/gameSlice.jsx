@@ -16,7 +16,7 @@ export const fetchGames = createAsyncThunk(
       const response = await axios.get("https://api.rawg.io/api/games", {
         params: {
           key: import.meta.env.VITE_GAME_API_KEY,
-          dates: "2019-09-01,2024-09-30",
+          dates: "2000-09-01,2024-09-30",
           platforms: "18,1,7",
           page: page,
           page_size: 20,

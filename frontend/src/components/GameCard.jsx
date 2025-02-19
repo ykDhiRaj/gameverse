@@ -20,6 +20,11 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
 
   const handleWishlist = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("You must be logged in to add to wishlist", { theme: 'dark', type:'error' });
+        return;
+      }
       const response = await axios.post(
         "http://localhost:3000/user/wishlist",
         { gameId: id },
@@ -28,13 +33,17 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
       console.log(response.data.msg); // This should work correctly
       toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
-      console.log(error.response?.data?.msg || "An error occurred");
       toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
     }
   };
   
   const handleFavorites = async () => {
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        toast.error("You must be logged in to add to favorites", { theme: 'dark', type:'error' });
+        return;
+      }
       const response = await axios.post(
         "http://localhost:3000/user/favorites",
         { gameId: id },
@@ -43,7 +52,6 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
       console.log(response.data.msg); // This should work correctly
       toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
-      console.log(error.response?.data?.msg || "An error occurred");
       toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
     }
   };

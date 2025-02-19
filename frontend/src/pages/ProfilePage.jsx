@@ -10,7 +10,6 @@ import {
   LogOut,
   BookmarkPlus
 } from 'lucide-react';
-import GameCard from '../components/GameCard';
 import WishlistCard from '../components/WishlistCard';
 import FavoritesCard from '../components/FavoritesCard';
 import { useDispatch } from 'react-redux';
@@ -23,7 +22,7 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('favorites');
   const [showSettings, setShowSettings] = useState(false);
   const [userData, setUserData] = useState(null);
-  const [games, setGames] = useState([]);
+  // const [games, setGames] = useState([]);
   // const [wishlist, setWishlist] = useState([]);
   // const [favorites, setFavorites] = useState([]);
   const [fetchedwishlist, setfetchedWishlist] = useState([]);
@@ -48,9 +47,10 @@ const ProfilePage = () => {
         const response = await axios.get('http://localhost:3000/user/userprofile', {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
+        console.log(response.data);
         setUserData(response.data);
-        fetchfavGames(response.data.favorites);
-        fetchwishGames(response.data.wishlist);
+        // fetchfavGames(response.data.favorites);
+        // fetchwishGames(response.data.wishlist);
         // fetchGames(response.data[activeTab]);
         
       } catch (error) {
@@ -61,28 +61,54 @@ const ProfilePage = () => {
     fetchUserData();
   }, []);
 
+  useEffect(() => {
+    if (userData) {
+      fetchfavGames(userData.favorites || []);
+      fetchwishGames(userData.wishlist || []);
+    }
+  }, [userData]);
+
   const fetchfavGames = async (gameIds) => {
-    const fetchedfavGames = await Promise.all(
-      gameIds.map(async (gameId) => {
-        const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
-          params: { key: import.meta.env.VITE_GAME_API_KEY },
-        });
-        return response.data;
-      })
-    );
-    setfetchedFavorites(fetchedfavGames);
+    try {
+      const fetchedfavGames = await Promise.all(
+        gameIds.map(async (gameId) => {
+          try {
+            const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
+              params: { key: import.meta.env.VITE_GAME_API_KEY },
+            });
+            return response.data;
+          } catch (error) {
+            console.error(`Error fetching game ${gameId}:`, error);
+            return null; // Return null instead of failing all
+          }
+        })
+      );
+      setfetchedFavorites(fetchedfavGames.filter(game => game !== null)); // Remove failed fetches
+    } catch (error) {
+      console.error("Error fetching favorite games:", error);
+    }
   };
+  
 
   const fetchwishGames = async (gameIds) => {
-    const fetchedGames = await Promise.all(
-      gameIds.map(async (gameId) => {
-        const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
-          params: { key: import.meta.env.VITE_GAME_API_KEY },
-        });
-        return response.data;
-      })
-    );
-    setfetchedWishlist(fetchedGames);
+    try {
+      const fetchedfavGames = await Promise.all(
+        gameIds.map(async (gameId) => {
+          try {
+            const response = await axios.get(`https://api.rawg.io/api/games/${gameId}`, {
+              params: { key: import.meta.env.VITE_GAME_API_KEY },
+            });
+            return response.data;
+          } catch (error) {
+            console.error(`Error fetching game ${gameId}:`, error);
+            return null; // Return null instead of failing all
+          }
+        })
+      );
+      setfetchedWishlist(fetchedfavGames.filter(game => game !== null)); // Remove failed fetches
+    } catch (error) {
+      console.error("Error fetching favorite games:", error);
+    }
   };
 
   const handleRemoveFromWishlist = async (id) => {
@@ -91,7 +117,7 @@ const ProfilePage = () => {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      setGames((prevGames) => prevGames.filter((game) => game.id !== id));
+      setfetchedWishlist((prevGames) => prevGames.filter((game) => game.id !== id));
     } catch (error) {
       console.error("Error removing from wishlist:", error);
     }
@@ -103,7 +129,7 @@ const ProfilePage = () => {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      setGames((prevGames) => prevGames.filter((game) => game.id !== id));
+      setfetchedFavorites((prevGames) => prevGames.filter((game) => game.id !== id));
     } catch (error) {
       console.error("Error removing from favorites:", error);
     }
@@ -122,13 +148,13 @@ const ProfilePage = () => {
             <div className="flex-1">
               <h1 className="text-3xl font-bold mb-2">{userData.username}</h1>
               <div className="flex items-center gap-4 text-gray-300">
-                <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2">
                   <Gamepad2 className="w-5 h-5 text-blue-400" />
-                  <span>{userData.favoritesCount} Favorites</span>
+                  <span>{fetchedwishlist.length} Wishlist</span>
                 </div>
                 <div className="flex items-center gap-2">
                   <Gamepad2 className="w-5 h-5 text-blue-400" />
-                  <span>{userData.wishlistCount} Wishlist</span>
+                  <span>{fetchedfavorites.length} Favorites</span>
                 </div>
               </div>
             </div>
@@ -163,17 +189,6 @@ const ProfilePage = () => {
         {/* Tabs */}
         <div className="flex gap-4 mb-6">
           <button
-            onClick={() => setActiveTab('favorites')}
-            className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-colors ${
-              activeTab === 'favorites' 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'
-            }`}
-          >
-            <Heart className={`w-5 h-5 ${activeTab === 'favorites' ? 'text-red-400' : ''}`} />
-            Favorites
-          </button>
-          <button
             onClick={() => setActiveTab('wishlist')}
             className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-colors ${
               activeTab === 'wishlist' 
@@ -184,21 +199,21 @@ const ProfilePage = () => {
             <BookmarkPlus className={`w-5 h-5 ${activeTab === 'wishlist' ? 'text-green-400' : ''}`} />
             Wishlist
           </button>
+          <button
+            onClick={() => setActiveTab('favorites')}
+            className={`px-6 py-3 rounded-lg flex items-center gap-2 transition-colors ${
+              activeTab === 'favorites' 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-800/50 text-gray-300 hover:bg-gray-700/50'
+            }`}
+          >
+            <Heart className={`w-5 h-5 ${activeTab === 'favorites' ? 'text-red-400' : ''}`} />
+            Favorites
+          </button>
         </div>
 
         {/* Games Grid */}
-        {games.length === 0 ? (
-          <div className="text-center py-20">
-            <h3 className="text-xl font-semibold mb-2">
-              No {activeTab === 'favorites' ? 'favorite' : 'wishlisted'} games yet
-            </h3>
-            <p className="text-gray-400">
-              {activeTab === 'favorites' 
-                ? 'Start adding games to your favorites!' 
-                : 'Add games to your wishlist to track them.'}
-            </p>
-          </div>
-        ) : (
+        {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
              {activeTab === 'favorites' ? 
               fetchedfavorites.map((fav)=>(
@@ -216,7 +231,7 @@ const ProfilePage = () => {
                 
             }
           </div>
-        )}
+        }
       </div>
     </div>
   );

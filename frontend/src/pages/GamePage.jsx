@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { Star, Calendar, Trophy, Monitor, ShoppingBag, Loader2, AlertCircle, Heart, BookmarkPlus } from "lucide-react";
+import { toast } from "react-toastify";
 
 const GamePage = () => {
   const { id } = useParams();
@@ -49,14 +50,41 @@ const GamePage = () => {
     fetchGameDetails();
   }, [id]);
 
-  const handleWishlist = () => {
-    setIsInWishlist(!isInWishlist);
-    // Add your wishlist logic here
+  const handleWishlist = async() => {
+    try {
+      const token = localStorage.getItem("token");
+            if (!token) {
+              toast.error("You must be logged in to add to wishlist", { theme: 'dark', type:'error' });
+              return;
+            }
+      const response = await axios.post(
+        "http://localhost:3000/user/wishlist",
+        { gameId: id },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
+    }
   };
 
-  const handleFavorites = () => {
-    setIsInFavorites(!isInFavorites);
-    // Add your favorites logic here
+  const handleFavorites = async() => {
+    try {
+      const token = localStorage.getItem("token");
+            if (!token) {
+              toast.error("You must be logged in to add to favorites", { theme: 'dark', type:'error' });
+              return;
+            }
+      const response = await axios.post(
+        "http://localhost:3000/user/favorites",
+        { gameId: id },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      console.log(response.data.msg); // This should work correctly
+      toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
+    } catch (error) {
+      toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
+    }
   };
 
   if (loading) return (
