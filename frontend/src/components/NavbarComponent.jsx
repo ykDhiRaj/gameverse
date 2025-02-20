@@ -1,10 +1,9 @@
 import React from "react";
-import { IoSearch } from "react-icons/io5";
-import { FaBell } from "react-icons/fa";
 import { FaUserCircle } from "react-icons/fa";
+import { IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
-import { setSearchQuery } from "../redux/gameSlice";
 import { useNavigate } from "react-router-dom";
+import { setSearchQuery } from "../redux/gameSlice";
 
 const NavbarComponent = () => {
   const dispatch = useDispatch();
@@ -36,10 +35,8 @@ const NavbarComponent = () => {
       </div>
       <div className="flex items-center justify-center gap-8">
         <div className="flex gap-3">
-          <FaUserCircle size={25} cursor={'pointer'} />
-          <h1 className="text-lg">My library</h1>
+          <FaUserCircle size={30} cursor={'pointer'} />
         </div>
-        <FaBell size={20} cursor={'pointer'} />
       </div>
     </div>
   );

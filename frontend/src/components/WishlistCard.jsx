@@ -1,7 +1,7 @@
+import axios from "axios";
+import { ChevronRight, Star, Trash } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Heart, Trash, Star, Calendar, ChevronRight } from "lucide-react";
-import axios from "axios";
 
 const WishlistCard = ({ game, onRemove }) => {
   const { id, background_image, name, released, rating, genres } = game;

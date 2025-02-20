@@ -5,10 +5,12 @@ import Home from "./pages/Home";
 import ProfilePage from "./pages/ProfilePage";
 import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
+import GameReviews from "./components/GameReviews";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GameVideos from "./components/GameVideos";
 import AccountSettings from "./pages/AccountSettings";
+import AboutPage from "./pages/AboutPage";
 
 
 function App() {
@@ -28,13 +30,15 @@ function MainLayout() {
   console.log(user);
   
 
-  return (
+  return (  
     <>
       {!hideNavbarRoutes.includes(location.pathname) && <NavbarComponent />}
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/games/:id" element={<GamePage />} />
+        <Route path="/reviews" element={<GameReviews/>}/>       
         <Route path="/videos" element={<GameVideos/>}/>
+        <Route path="/about" element={<AboutPage />} />
 
         <Route path="/login" element={user? <Navigate to={'/'}/>:<LoginPage/>} />
         <Route path="/signup" element={user? <Navigate to={'/'}/>:<SignupPage />} />

@@ -2,7 +2,7 @@ const fetch = require("node-fetch");
 
 const getGameVideos = async (req, res) => {
   try {
-    const apiUrl = `https://www.gamespot.com/api/videos/?api_key=${process.env.GAMESPOT_API_KEY}&format=json`;
+    const apiUrl = `https://www.gamespot.com/api/videos/?api_key=${process.env.GAMESPOT_API_KEY}&format=json&sort=publish_date:desc`;
     
     const response = await fetch(apiUrl);
     if (!response.ok) {

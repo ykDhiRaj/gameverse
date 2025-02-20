@@ -1,7 +1,7 @@
+import axios from "axios";
+import { AlertCircle, BookmarkPlus, Calendar, Heart, Loader2, Monitor, ShoppingBag, Trophy } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { Star, Calendar, Trophy, Monitor, ShoppingBag, Loader2, AlertCircle, Heart, BookmarkPlus } from "lucide-react";
 import { toast } from "react-toastify";
 
 const GamePage = () => {

@@ -1,21 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  Heart, 
-  Settings, 
-  Star, 
-  ChevronRight, 
-  Gamepad2, 
-  User, 
-  Edit, 
-  LogOut,
-  BookmarkPlus
-} from 'lucide-react';
-import WishlistCard from '../components/WishlistCard';
-import FavoritesCard from '../components/FavoritesCard';
-import { useDispatch } from 'react-redux';
-import { removeUser } from '../redux/userSlice';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import {
+  BookmarkPlus,
+  ChevronRight,
+  Gamepad2,
+  Heart,
+  LogOut,
+  Settings,
+  User
+} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import FavoritesCard from '../components/FavoritesCard';
+import WishlistCard from '../components/WishlistCard';
+import { removeUser } from '../redux/userSlice';
 
 
 const ProfilePage = () => {
