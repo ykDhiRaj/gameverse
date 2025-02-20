@@ -8,6 +8,7 @@ import SignupPage from "./pages/SignupPage";
 import { useSelector } from "react-redux";
 import ProtectedRoute from "./components/ProtectedRoute";
 import GameVideos from "./components/GameVideos";
+import AccountSettings from "./pages/AccountSettings";
 
 
 function App() {
@@ -40,6 +41,7 @@ function MainLayout() {
         {/* <Route path="/profile" element={user? <ProfilePage />:<Navigate to={'/login'}/>} /> */}
         <Route element={<ProtectedRoute/>}>
             <Route path="/profile" element={<ProfilePage/>}/>
+            <Route path="/profile/edit" element={<AccountSettings/>}/>
         </Route>
       </Routes>
     </>

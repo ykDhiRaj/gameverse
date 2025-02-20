@@ -34,6 +34,10 @@ const ProfilePage = () => {
   console.log(fetchedwishlist)
   // console.log(activeTab);
   // console.log(games);
+
+  const handleClick = () => {
+    navigate('/profile/edit');
+  }
   
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -172,7 +176,7 @@ const ProfilePage = () => {
           {showSettings && (
             <div className="absolute top-24 right-8 w-64 bg-gray-800 rounded-xl shadow-xl z-10 overflow-hidden">
               <div className="p-2">
-                <button className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700/50 transition-colors">
+                <button onClick={handleClick} className="w-full flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-700/50 transition-colors">
                   <User className="w-5 h-5 text-blue-400" />
                   <span>Edit Profile</span>
                   <ChevronRight className="w-4 h-4 ml-auto" />

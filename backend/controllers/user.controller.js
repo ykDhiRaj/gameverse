@@ -6,6 +6,10 @@ const jwt = require("jsonwebtoken");
 const signup = async (req, res) => {
   const { username, email, password } = req.body;
   try {
+    const takenUsername = await User.findOne({username:username});
+    if(takenUsername){
+      return res.status(400).json({msg: "Username already taken"});
+    }
     const exists = await User.findOne({ email });
     if (exists) {
       return res.status(400).json({ msg: "User already exists" });
@@ -72,6 +76,61 @@ const deleteAccount = async (req, res) => {
 
     await User.findByIdAndDelete(userId);
     res.status(200).json({ msg: "Account deleted successfully" });
+  } catch (error) {
+    res.status(500).json({ msg: "Server error", error });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { username, email, currentPassword, newPassword } = req.body;
+
+    // Fetch the existing user data
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+
+    // Handle username update
+    if (username && username !== user.username) {
+      const existingUsername = await User.findOne({ username });
+      if (existingUsername) {
+        return res.status(400).json({ msg: "Username already taken" });
+      }
+      user.username = username;
+    } else if (username === user.username) {
+      return res.status(400).json({ msg: "New username cannot be the same as the current one" });
+    }
+
+    // Handle email update
+    if (email && email !== user.email) {
+      const existingEmail = await User.findOne({ email });
+      if (existingEmail) {
+        return res.status(400).json({ msg: "Email already exists" });
+      }
+      user.email = email;
+    } else if (email === user.email) {
+      return res.status(400).json({ msg: "New email cannot be the same as the current one" });
+    }
+
+    // Handle password update
+    if (currentPassword && newPassword) {
+      const passwordMatch = await bcrypt.compare(currentPassword, user.password);
+      if (!passwordMatch) {
+        return res.status(400).json({ msg: "Current password is incorrect" });
+      }
+      if (currentPassword === newPassword) {
+        return res.status(400).json({ msg: "New password cannot be the same as the current password" });
+      }
+      const salt = await bcrypt.genSalt(10);
+      user.password = await bcrypt.hash(newPassword, salt);
+    }
+
+    // Save updates
+    await user.save();
+
+    res.status(200).json({ msg: "Profile updated successfully", user });
   } catch (error) {
     res.status(500).json({ msg: "Server error", error });
   }
@@ -194,9 +253,25 @@ const removeFromFavorites = async (req, res) => {
   }
 };
 
+const getUser = async (req,res)=>{
+  try {
+    const userId = req.user.id;
+    const user = await User.findById(userId).select('-password');
+    if(!user){
+      return res.status(404).json({msg:"User not found"});
+    } 
+    res.status(200).json(user);
+   } catch (error) {
+    res.status(500).json({msg:"Server error",error});}
+}
+
+
+
 module.exports = {
   signup,
   login,
+  getUser,
+  updateProfile,
   deleteAccount,
   addToWishlist,
   addToFavorites,
