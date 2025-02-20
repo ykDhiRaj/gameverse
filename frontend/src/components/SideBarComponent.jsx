@@ -3,6 +3,7 @@ import { FaUser } from 'react-icons/fa6';
 import {
   IoBookmark,
   IoHomeSharp,
+  IoInformationCircle,
   IoLogIn,
   IoSettings,
   IoVideocam
@@ -24,7 +25,8 @@ function SideBarComponent() {
     { icon: FaUser, label: "Profile", path: "/profile" } : null,
     !user ? 
     { icon: IoLogIn, label: "Login", path: "/login" } : null,
-    { icon: IoSettings, label: "Settings", path: "/settings" },
+    { icon: IoSettings, label: "Settings", path: "/profile/edit" },
+    { icon: IoInformationCircle, label: "About", path: "/about" },
    
   ].filter(Boolean);
 

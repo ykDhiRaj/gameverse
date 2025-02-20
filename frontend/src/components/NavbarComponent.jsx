@@ -4,10 +4,13 @@ import { IoSearch } from "react-icons/io5";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setSearchQuery } from "../redux/gameSlice";
+import { useSelector } from "react-redux";
 
 const NavbarComponent = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const user = useSelector((state) => state.user);
 
   const handleSearch = (e) => {
     dispatch(setSearchQuery(e.target.value));
@@ -19,6 +22,16 @@ const NavbarComponent = () => {
 
   const handleClick = ()=>{
     navigate('/');
+  }
+
+  const handleProfileClick = ()=>{
+
+    if(!user){
+      navigate('/login');
+      return;
+    }
+    navigate('/profile');
+
   }
 
   return (
@@ -35,7 +48,7 @@ const NavbarComponent = () => {
       </div>
       <div className="flex items-center justify-center gap-8">
         <div className="flex gap-3">
-          <FaUserCircle size={30} cursor={'pointer'} />
+          <FaUserCircle size={30} cursor={'pointer'} onClick={handleProfileClick}/>
         </div>
       </div>
     </div>

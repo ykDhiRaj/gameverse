@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ExternalLink, Loader2, GamepadIcon } from "lucide-react";
+import { ExternalLink, Loader2, GamepadIcon, AlertCircle } from "lucide-react";
 
 const RatingBar = ({ score }) => {
   // Calculate color based on score
@@ -54,9 +54,10 @@ const GameReviews = () => {
 
   if (error) {
     return (
-      <div className="flex items-center justify-center min-h-[400px] text-red-500">
-        <p>Error: {error}</p>
-      </div>
+      <div className="flex  flex-col items-center justify-center min-h-screen bg-[#161616] text-red-400">
+      <AlertCircle className="w-12 h-12 mb-4" />
+      <p className="text-xl">Error: {error}</p>
+    </div>
     );
   }
 
