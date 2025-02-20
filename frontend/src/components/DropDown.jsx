@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { IoChevronDownOutline, IoCheckmark } from "react-icons/io5";
+import React, { useEffect, useRef, useState } from 'react';
+import { IoCheckmark, IoChevronDownOutline } from "react-icons/io5";
 
 const DropDown = ({ options, onSelect, selectedOption, selectedOptions, label, multiple = false }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -53,7 +53,7 @@ const DropDown = ({ options, onSelect, selectedOption, selectedOptions, label, m
       </button>
 
       {isOpen && (
-        <div className="absolute mt-2 w-full bg-[#202020] rounded-lg shadow-lg z-50 transform opacity-100 scale-100 transition-all duration-300 max-h-[300px] overflow-y-auto">
+        <div className="absolute mt-2 w-full bg-[#202020] rounded-lg shadow-lg z-50 transform opacity-100 scale-100 transition-all duration-300 max-h-[300px] overflow-y-auto scrollbar-hidden">
           <ul className="py-2">
             {options.map((option, index) => (
               <li

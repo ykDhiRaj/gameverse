@@ -1,15 +1,14 @@
 import React from "react";
-import {
-  IoHomeSharp,
-  IoCalendar,
-  IoHeart,
-  IoSettings,
-  IoBookmark,
-  IoLogIn
-} from "react-icons/io5";
 import { FaUser } from 'react-icons/fa6';
-import { useNavigate, useLocation } from "react-router-dom";
-import {useSelector} from "react-redux"
+import {
+  IoBookmark,
+  IoHomeSharp,
+  IoLogIn,
+  IoSettings,
+  IoVideocam
+} from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 function SideBarComponent() {
@@ -19,14 +18,14 @@ function SideBarComponent() {
 
   const menuItems = [
     { icon: IoHomeSharp, label: "Home", path: "/" },
-    { icon: IoCalendar, label: "New Releases", path: "/new-releases" },
-    { icon: IoHeart, label: "Favorites", path: "/favorites" },
-    { icon: IoBookmark, label: "Wishlist", path: "/wishlist" },
+    { icon: IoBookmark, label: "Reviews", path: "/reviews" },
+    { icon: IoVideocam, label: "Videos", path: "/videos" },
     user ? 
     { icon: FaUser, label: "Profile", path: "/profile" } : null,
     !user ? 
     { icon: IoLogIn, label: "Login", path: "/login" } : null,
-    { icon: IoSettings, label: "Settings", path: "/settings" }
+    { icon: IoSettings, label: "Settings", path: "/settings" },
+   
   ].filter(Boolean);
 
   const handleNavigation = (path) => {
