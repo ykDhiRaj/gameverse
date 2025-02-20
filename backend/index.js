@@ -5,6 +5,8 @@ const cors = require("cors")
 const userRoute = require('./routes/user.route');
 const authRoutes = require('./routes/authRoutes');
 
+const gameVideosRoutes = require("./routes/gameVideosRoutes");
+
 const app = express()
 
 
@@ -16,6 +18,8 @@ app.use(cors());
 app.use("/user",userRoute);
 
 app.use("/api/auth", authRoutes);
+
+app.use("/api/game-videos", gameVideosRoutes);
 
 
 mongoose.connect(process.env.URI).
