@@ -80,7 +80,6 @@ const GamePage = () => {
         { gameId: id },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      console.log(response.data.msg); // This should work correctly
       toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
       toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });

@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { ExternalLink, Loader2, GamepadIcon, AlertCircle } from "lucide-react";
 
 const RatingBar = ({ score }) => {
-  // Calculate color based on score
   const getColor = (score) => {
     if (score <= 4) return "bg-red-500";
     if (score <= 6) return "bg-yellow-500";

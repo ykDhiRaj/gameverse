@@ -14,7 +14,6 @@ const NavbarComponent = () => {
 
   const handleSearch = (e) => {
     dispatch(setSearchQuery(e.target.value));
-    // If not on home page, navigate to home
     if (window.location.pathname !== '/') {
       navigate('/');
     }

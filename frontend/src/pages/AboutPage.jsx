@@ -31,7 +31,7 @@ const AboutPage = () => {
   useEffect(() => {
     const fetchDevelopers = async () => {
       try {
-        const devUsernames = ['ykDhiRaj','yxsh-exe'];; // Replace with actual GitHub usernames
+        const devUsernames = ['ykDhiRaj','yxsh-exe'];
         const responses = await Promise.all(
           devUsernames.map(username => 
             axios.get(`https://api.github.com/users/${username}`)

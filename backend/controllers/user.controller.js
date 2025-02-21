@@ -66,7 +66,7 @@ const login = async (req, res) => {
 // Delete user account
 const deleteAccount = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming authentication middleware sets req.user
+    const userId = req.user.id; 
     
 
     const user = await User.findById(userId);
@@ -205,11 +205,10 @@ const addToFavorites = async (req, res) => {
   }
 };
 
-// Add this function to your existing user.controller.js
 const getUserData = async (req, res) => {
   try {
-    const userId = req.user.id; // Assuming authentication middleware sets req.user
-    const user = await User.findById(userId).select('-password'); // Exclude password
+    const userId = req.user.id; 
+    const user = await User.findById(userId).select('-password'); 
     if (!user) {
       return res.status(404).json({ msg: "User not found" });
     }
