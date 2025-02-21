@@ -15,7 +15,7 @@ const ProtectedRoute = () => {
       }
 
       try {
-        await axios.get("http://localhost:3000/api/auth/verify", {
+        await axios.get(`${import.meta.env.VITE_API_BASE_URL}/api/auth/verify`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setIsAuthenticated(true);

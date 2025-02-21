@@ -9,7 +9,7 @@ const GameVideos = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/game-videos");
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/game-videos`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
