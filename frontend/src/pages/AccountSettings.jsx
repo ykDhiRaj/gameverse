@@ -34,21 +34,36 @@ const AccountSettings = () => {
     fetchAccountDetails();
   }, []);
 
-  const handleSubmit = async (e) => {
+  const handleUsernameUpdate = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
 
     try {
       const response = await axios.put(
-        "http://localhost:3000/user/update-profile",
-        { username, email, currentPassword, newPassword },
+        "http://localhost:3000/user/update-username",
+        { username },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      console.log(response.data.user.email);
-      dispatch(removeUser());
-      dispatch(addUser(response.data.user.email));
-      setMessage("Profile updated successfully!");
+      // dispatch(addUser(response.data.user.username));
+      setMessage("Username updated successfully!");
+    } catch (err) {
+      setError(err.response?.data?.msg || "Something went wrong");
+    }
+  };
+
+  const handlePasswordUpdate = async (e) => {
+    e.preventDefault();
+    setMessage("");
+    setError("");
+
+    try {
+      await axios.put(
+        "http://localhost:3000/user/update-password",
+        { currentPassword, newPassword },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+      );
+      setMessage("Password updated successfully!");
       setCurrentPassword("");
       setNewPassword("");
     } catch (err) {
@@ -89,7 +104,7 @@ const AccountSettings = () => {
       ),
       {
         position: "top-center",
-        autoClose: false, // Keeps the toast open until the user interacts
+        autoClose: false,
         closeOnClick: false,
         draggable: false,
         closeButton: false,
@@ -102,7 +117,8 @@ const AccountSettings = () => {
       <h2 className="text-xl font-bold mb-4">Account Settings</h2>
       {message && <p className="text-green-500">{message}</p>}
       {error && <p className="text-red-500">{error}</p>}
-      <form onSubmit={handleSubmit} className="space-y-4">
+      
+      <form onSubmit={handleUsernameUpdate} className="space-y-4">
         <div>
           <label className="block text-sm font-medium">Username</label>
           <input
@@ -112,15 +128,12 @@ const AccountSettings = () => {
             className="w-full p-2 border rounded"
           />
         </div>
-        <div>
-          <label className="block text-sm font-medium">Email</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-2 border rounded"
-          />
-        </div>
+        <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
+          Update Username
+        </button>
+      </form>
+      
+      <form onSubmit={handlePasswordUpdate} className="space-y-4 mt-4">
         <div>
           <label className="block text-sm font-medium">Current Password</label>
           <input
@@ -140,9 +153,10 @@ const AccountSettings = () => {
           />
         </div>
         <button type="submit" className="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">
-          Update Account
+          Update Password
         </button>
       </form>
+      
       <button onClick={handleDelete} className="w-full bg-red-500 text-white p-2 mt-4 rounded hover:bg-red-600">
         Delete Account
       </button>
