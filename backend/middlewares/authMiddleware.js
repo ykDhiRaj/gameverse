@@ -12,9 +12,9 @@ const authMiddleware = (req, res, next) => {
     // Verify token
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     
-    req.user = decoded; // Attach user data to request object
+    req.user = decoded; 
 
-    next(); // Proceed to next middleware/controller
+    next(); 
   } catch (error) {
     res.status(401).json({ message: "Invalid or expired token" });
   }

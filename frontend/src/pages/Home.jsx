@@ -37,7 +37,6 @@ const Home = () => {
     });
   };
 
-  // Filter and sort games
   const filteredAndSortedGames = games
     .filter(game => {
       const matchesSearch = searchQuery 

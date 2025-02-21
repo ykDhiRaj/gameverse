@@ -13,14 +13,14 @@ const WishlistCard = ({ game, onRemove }) => {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
-      onRemove(id); // Call the onRemove function passed as a prop
+      onRemove(id); 
     } catch (error) {
       console.error("Error removing from wishlist:", error);
     }
   };
 
   const handleViewDetails = () => {
-    navigate(`/games/${id}`); // Navigate to the game's details page
+    navigate(`/games/${id}`); 
   };
 
   return (

@@ -22,7 +22,6 @@ const SignupPage = () => {
         email: email,
         password: password
       }).then((response)=>{
-        console.log(response);
         if (response.status === 201) {
           toast.success("Account creation successful", {
             theme: 'dark',
@@ -39,7 +38,6 @@ const SignupPage = () => {
           navigate('/');
         }
       }).catch((error)=>{
-        console.log(error);
         if (error.response && error.response.status === 400) {
           toast.error(error.response.data.msg || "User already exists", {
             theme: 'dark',

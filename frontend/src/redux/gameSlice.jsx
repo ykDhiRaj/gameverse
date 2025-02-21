@@ -1,13 +1,11 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// Async action to fetch games
 export const fetchGames = createAsyncThunk(
   "games/fetchGames",
   async (page, { getState, rejectWithValue }) => {
     const { games } = getState();
 
-    // Prevent fetching if the page is already loaded
     if (games.fetchedPages.includes(page)) {
       return rejectWithValue("Page already fetched");
     }

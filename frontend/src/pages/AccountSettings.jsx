@@ -20,7 +20,7 @@ function AccountSettings() {
   useEffect(() => {
     const fetchAccountDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/user/account-details", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/account-details`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         
@@ -42,7 +42,7 @@ function AccountSettings() {
 
     try {
       const response = await axios.put(
-        "http://localhost:3000/user/update-username",
+        `${import.meta.env.VITE_API_BASE_URL}/user/update-username`,
         { username },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -59,7 +59,7 @@ function AccountSettings() {
 
     try {
       await axios.put(
-        "http://localhost:3000/user/update-password",
+        `${import.meta.env.VITE_API_BASE_URL}/user/update-password`,
         { currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -82,7 +82,7 @@ function AccountSettings() {
               onClick={async () => {
                 closeToast();
                 try {
-                  await axios.delete("http://localhost:3000/user/delete", {
+                  await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/delete`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                   });
                   localStorage.removeItem("token");
@@ -118,7 +118,7 @@ function AccountSettings() {
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900 relative overflow-hidden">
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-12 relative z-10">
+      <div className="container mx-auto px-4 py-12 mt-10 relative z-10">
         <div className="max-w-4xl mx-auto">
           <div className="bg-white/5 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden">
             <div className="p-8 md:p-12">

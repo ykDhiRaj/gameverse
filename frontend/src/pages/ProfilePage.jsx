@@ -20,19 +20,11 @@ const ProfilePage = () => {
   const [activeTab, setActiveTab] = useState('favorites');
   const [showSettings, setShowSettings] = useState(false);
   const [userData, setUserData] = useState(null);
-  // const [games, setGames] = useState([]);
-  // const [wishlist, setWishlist] = useState([]);
-  // const [favorites, setFavorites] = useState([]);
   const [fetchedwishlist, setfetchedWishlist] = useState([]);
   const [fetchedfavorites, setfetchedFavorites] = useState([]);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   
-  console.log(fetchedfavorites);
-  console.log(fetchedwishlist)
-  // console.log(activeTab);
-  // console.log(games);
-
   const handleClick = () => {
     navigate('/profile/edit');
   }
@@ -49,12 +41,8 @@ const ProfilePage = () => {
         const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/userprofile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        console.log(response.data);
         setUserData(response.data);
-        // fetchfavGames(response.data.favorites);
-        // fetchwishGames(response.data.wishlist);
-        // fetchGames(response.data[activeTab]);
-        
+
       } catch (error) {
         console.error("Error fetching user data:", error);
       }
@@ -81,11 +69,11 @@ const ProfilePage = () => {
             return response.data;
           } catch (error) {
             console.error(`Error fetching game ${gameId}:`, error);
-            return null; // Return null instead of failing all
+            return null; 
           }
         })
       );
-      setfetchedFavorites(fetchedfavGames.filter(game => game !== null)); // Remove failed fetches
+      setfetchedFavorites(fetchedfavGames.filter(game => game !== null)); 
     } catch (error) {
       console.error("Error fetching favorite games:", error);
     }
@@ -103,11 +91,11 @@ const ProfilePage = () => {
             return response.data;
           } catch (error) {
             console.error(`Error fetching game ${gameId}:`, error);
-            return null; // Return null instead of failing all
+            return null; 
           }
         })
       );
-      setfetchedWishlist(fetchedfavGames.filter(game => game !== null)); // Remove failed fetches
+      setfetchedWishlist(fetchedfavGames.filter(game => game !== null)); 
     } catch (error) {
       console.error("Error fetching favorite games:", error);
     }

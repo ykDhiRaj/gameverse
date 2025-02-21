@@ -30,7 +30,6 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
         { gameId: id },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      console.log(response.data.msg); // This should work correctly
       toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
       toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
@@ -49,7 +48,7 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
         { gameId: id },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
-      console.log(response.data.msg); // This should work correctly
+      console.log(response.data.msg); 
       toast.success(`${response.data.msg}`, { theme: 'dark', type:'success' });
     } catch (error) {
       toast.error(error.response?.data?.msg || "Something went wrong", { theme: 'dark', type:'error' });
@@ -57,7 +56,7 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
   };
   
 
-  const ratingStars = Math.round((rating / 2) * 2) / 2; // Rounds to nearest 0.5
+  const ratingStars = Math.round((rating / 2) * 2) / 2;
 
   return (
     <li

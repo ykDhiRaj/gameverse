@@ -27,7 +27,7 @@ function MainLayout() {
   const location = useLocation();
   const hideNavbarRoutes = ["/login", "/signup"];
   const user = useSelector((state)=>state.user.user);
-  console.log(user);
+  
   
 
   return (  
