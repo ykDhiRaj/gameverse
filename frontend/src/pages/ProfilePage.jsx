@@ -46,7 +46,7 @@ const ProfilePage = () => {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://localhost:3000/user/userprofile', {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/userprofile`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         console.log(response.data);
@@ -115,7 +115,7 @@ const ProfilePage = () => {
 
   const handleRemoveFromWishlist = async (id) => {
     try {
-      await axios.delete('http://localhost:3000/user/wishlist/remove', {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/wishlist/remove`, {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -127,7 +127,7 @@ const ProfilePage = () => {
 
   const handleRemoveFromFavorites = async (id) => {
     try {
-      await axios.delete('http://localhost:3000/user/favorites/remove', {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/favorites/remove`, {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });

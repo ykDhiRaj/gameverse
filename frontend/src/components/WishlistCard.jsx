@@ -9,7 +9,7 @@ const WishlistCard = ({ game, onRemove }) => {
 
   const handleRemove = async () => {
     try {
-      await axios.delete('http://localhost:3000/user/wishlist/remove', {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/wishlist/remove`, {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
