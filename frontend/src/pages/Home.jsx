@@ -4,6 +4,7 @@ import { fetchGames, setPage } from "../redux/gameSlice";
 import GameCard from "../components/GameCard";
 import SideBarComponent from "../components/SideBarComponent";
 import DropDown from "../components/DropDown";
+import { Loader2 } from "lucide-react";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -71,11 +72,17 @@ const Home = () => {
     }
   }, [page, dispatch, fetchedPages]);
 
+  if (loading) return (
+    <div className="flex items-center justify-center min-h-screen bg-[#161616]">
+      <Loader2 className="w-12 h-12 text-gray-400 animate-spin" />
+    </div>
+  );
+
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
     <div className="p-7 bg-[#161616] text-white relative mt-10 w-full">
-      <div className="flex flex-row gap-5 w-full">
+      <div className="flex flex-row gap-10 w-full">
         <div className="w-[200px]"><SideBarComponent/></div>
         <div className="flex-1">
           <h2 className="text-2xl font-bold mb-5 text-white">Game List</h2>

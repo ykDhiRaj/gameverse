@@ -40,7 +40,7 @@ function SideBarComponent() {
   };
 
   return (
-    <div className="fixed top-24 left-7 max-h-[calc(100vh-6rem)] bg-[#151515]">
+    <div className="fixed top-24 left-7 max-h-[calc(100vh-6rem)] w-[14rem] bg-[#151515]">
       <div className="bg-[#202020] text-gray-100 px-4 py-6 flex flex-col transition-all duration-300 ease-in-out rounded-lg">
         <nav className="flex-1">
           <ul className="space-y-2">

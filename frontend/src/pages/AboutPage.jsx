@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Code, Gamepad, Github, Star, Twitter, Users } from 'lucide-react';
+import { Code, Gamepad, Star, Users } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { FaEnvelope, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { FaGithub, FaGlobe, FaLinkedin, FaXTwitter } from 'react-icons/fa6';
 
 function BentoBox({ children, className = '' }) {
   return (
@@ -58,20 +58,25 @@ const AboutPage = () => {
       </div>
     );
   }
-
+  const emails=['jdhiraj.dev@gmail.com','work.ybansod@gmail.com']
   const staticLinks = [
     {
-      href: 'mailto:example@example.com',
-      icon: FaEnvelope,
-      label: 'Mail',
-    },
-    {
-      href: 'https://twitter.com/example',
-      icon: FaTwitter,
+      href: 'https://x.com/JdhirajDev?t=38XZlQXjn31gjVuUZqEaug&s=09',
+      icon: FaXTwitter,
       label: 'Twitter',
     },
     {
-      href: 'https://linkedin.com/in/example',
+      href: 'https://www.linkedin.com/in/dhiraj-jatav',
+      icon: FaLinkedin,
+      label: 'LinkedIn',
+    },
+    {
+      href: 'https://x.com/dev_yash04?t=v5m3QNlyBNnCtq7dsoNaPw&s=09',
+      icon: FaXTwitter,
+      label: 'Twitter',
+    },
+    {
+      href: 'https://www.linkedin.com/in/yash-bansod-b61471268/',
       icon: FaLinkedin,
       label: 'LinkedIn',
     },
@@ -139,22 +144,25 @@ const AboutPage = () => {
                 />
                 <h2 className="text-2xl font-bold mb-2">{dev.name || dev.login}</h2>
                 <p className="text-gray-400 mb-2">@{dev.login}</p>
-                <p className="text-gray-400 mb-4">{dev.bio || (index === 0 ? 'Full Stack Developer' : 'Software Engineer')}</p>
+                <p className="text-gray-400 mb-4">Full Stack Developer</p>
                 <div className="flex justify-center space-x-4">
-                  <SocialLink href={dev.html_url} icon={Github} />
-                  {dev.blog && <SocialLink href={dev.blog} icon={Globe} />}
+                  <SocialLink href={dev.html_url} icon={FaGithub} />
+                  {dev.blog && <SocialLink href={dev.blog} icon={FaGlobe} />}
                   {dev.twitter_username && (
                     <SocialLink
                       href={`https://twitter.com/${dev.twitter_username}`}
-                      icon={Twitter}
+                      icon={FaXTwitter}
                     />
                   )}
-                  <div className="flex justify-center space-x-4">
-                    {staticLinks.map((link, index) => (
-                      <SocialLink key={index} href={link.href} icon={link.icon} />
-                    ))}
-                  </div>
+                   {/* Conditional static links based on developer index */}
+                   {index === 0 && staticLinks.slice(0, 2).map((link, linkIndex) => (
+                    <SocialLink key={linkIndex} href={link.href} icon={link.icon} />
+                  ))}
+                  {index === 1 && staticLinks.slice(2, 4).map((link, linkIndex) => (
+                    <SocialLink key={linkIndex} href={link.href} icon={link.icon} />
+                  ))}
                 </div>
+                {index === 0 ?<h1 className='mt-3'>{emails[0]}</h1>:<h1 className='mt-3'>{emails[1]}</h1>}
               </BentoBox>
 
               <div className="grid grid-cols-2 gap-4">
