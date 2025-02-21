@@ -2,11 +2,11 @@ const express = require("express")
 const mongoose = require("mongoose")
 require("dotenv").config();
 const cors = require("cors")
-const userRoute = require('./routes/user.route');
-const authRoutes = require('./routes/authRoutes');
+const userRoute = require('./routes/user.routes');
+const authRoutes = require('./routes/auth.routes');
 
-const gameVideosRoutes = require("./routes/gameVideosRoutes");
-const gameReviewRoutes = require("./routes/gameReviewRoutes");
+const gameVideosRoutes = require("./routes/gameVideos.routes");
+const gameReviewRoutes = require("./routes/gameReview.routes");
 
 
 const app = express()

@@ -1,4 +1,4 @@
-const User = require("../models/userModel");
+const User = require("../models/user.model");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -81,10 +81,12 @@ const deleteAccount = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+// Updating the username
+const updateUsername = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { username, email, currentPassword, newPassword } = req.body;
+    const { username } = req.body;
+   
 
     // Fetch the existing user data
     const user = await User.findById(userId);
@@ -98,22 +100,35 @@ const updateProfile = async (req, res) => {
       if (existingUsername) {
         return res.status(400).json({ msg: "Username already taken" });
       }
-      user.username = username;
+      
     } else if (username === user.username) {
+
       return res.status(400).json({ msg: "New username cannot be the same as the current one" });
-    }
 
-    // Handle email update
-    if (email && email !== user.email) {
-      const existingEmail = await User.findOne({ email });
-      if (existingEmail) {
-        return res.status(400).json({ msg: "Email already exists" });
-      }
-      user.email = email;
-    } else if (email === user.email) {
-      return res.status(400).json({ msg: "New email cannot be the same as the current one" });
     }
+    user.username = username;
+    await user.save();
+    res.status(200).json({ msg: "Username updated successfully", user });
+    
+  }catch (error) {
+    res.status(500).json({ msg: "Server error", error });
+    }
+}
 
+// Updating the password
+const updatePassword = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { currentPassword, newPassword } = req.body;
+
+    if(!currentPassword || !newPassword){
+      return res.status(400).json({msg:"All fields required"})
+    }
+    // Fetch the existing user data
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ msg: "User not found" });
+    }
     // Handle password update
     if (currentPassword && newPassword) {
       const passwordMatch = await bcrypt.compare(currentPassword, user.password);
@@ -126,11 +141,9 @@ const updateProfile = async (req, res) => {
       const salt = await bcrypt.genSalt(10);
       user.password = await bcrypt.hash(newPassword, salt);
     }
-
     // Save updates
     await user.save();
-
-    res.status(200).json({ msg: "Profile updated successfully", user });
+    res.status(200).json({ msg: "Password updated successfully", user });
   } catch (error) {
     res.status(500).json({ msg: "Server error", error });
   }
@@ -271,11 +284,12 @@ module.exports = {
   signup,
   login,
   getUser,
-  updateProfile,
   deleteAccount,
   addToWishlist,
   addToFavorites,
   getUserData,
   removeFromWishlist,
-  removeFromFavorites
+  removeFromFavorites,
+  updateUsername,
+  updatePassword
 };
