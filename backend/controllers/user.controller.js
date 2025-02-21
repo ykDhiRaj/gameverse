@@ -120,6 +120,10 @@ const updatePassword = async (req, res) => {
   try {
     const userId = req.user.id;
     const { currentPassword, newPassword } = req.body;
+
+    if(!currentPassword || !newPassword){
+      return res.status(400).json({msg:"All fields required"});
+    }
     // Fetch the existing user data
     const user = await User.findById(userId);
     if (!user) {
