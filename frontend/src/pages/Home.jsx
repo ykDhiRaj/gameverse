@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchGames, setPage } from "../redux/gameSlice";
 import GameCard from "../components/GameCard";
@@ -13,6 +13,7 @@ const Home = () => {
   );
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [ordering, setOrdering] = useState("");
+  const loadMoreRef = useRef(null);
 
   const uniqueGenres = [...new Set(games.flatMap(game => 
     game.genres.map(genre => genre.name)
@@ -39,12 +40,10 @@ const Home = () => {
   // Filter and sort games
   const filteredAndSortedGames = games
     .filter(game => {
-      // Search filter
       const matchesSearch = searchQuery 
         ? game.name.toLowerCase().includes(searchQuery.toLowerCase())
         : true;
       
-      // Genre filter
       const matchesGenres = selectedGenres.length === 0 
         ? true 
         : game.genres.some(genre => selectedGenres.includes(genre.name));
@@ -66,28 +65,28 @@ const Home = () => {
       }
     });
 
+  const handleLoadMore = () => {
+    dispatch(setPage(page + 1));
+  };
+
   useEffect(() => {
     if (!fetchedPages.includes(page)) {
       dispatch(fetchGames(page));
     }
   }, [page, dispatch, fetchedPages]);
 
-  if (loading) return (
-    <div className="flex items-center justify-center min-h-screen bg-[#161616]">
-      <Loader2 className="w-12 h-12 text-gray-400 animate-spin" />
-    </div>
-  );
-
   if (error) return <p className="text-red-500">Error: {error}</p>;
 
   return (
-    <div className="p-7 bg-[#161616] text-white relative mt-10 w-full">
-      <div className="flex flex-row gap-10 w-full">
-        <div className="w-[200px]"><SideBarComponent/></div>
-        <div className="flex-1">
+    <div className="p-7 bg-[#161616] text-white relative mt-10 w-full min-h-screen">
+      <div className="flex flex-col md:flex-row gap-10 w-full">
+        <div className="w-full md:w-[200px] overflow-x-auto md:overflow-visible">
+          <SideBarComponent/>
+        </div>
+        <div className="flex-1 px-2 md:px-0">
           <h2 className="text-2xl font-bold mb-5 text-white">Game List</h2>
           
-          <div className="flex gap-4 mb-6">
+          <div className="flex flex-col sm:flex-row gap-4 mb-6">
             <DropDown 
               options={uniqueGenres}
               onSelect={handleGenreSelect}
@@ -104,20 +103,25 @@ const Home = () => {
             />
           </div>
 
-          <ul className="mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <ul className="mt-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredAndSortedGames.map((game) => (
               <GameCard key={game.id} game={game} />
             ))}
           </ul>
           
-          <div className="text-center mt-6">
-            <button
-              onClick={() => dispatch(setPage(page + 1))}
-              disabled={loading}
-              className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
-            >
-              {loading ? "Loading..." : "Load More"}
-            </button>
+          <div className="text-center mt-6" ref={loadMoreRef}>
+            {loading ? (
+              <div className="flex justify-center items-center p-4">
+                <Loader2 className="w-8 h-8 text-gray-400 animate-spin" />
+              </div>
+            ) : (
+              <button
+                onClick={handleLoadMore}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition disabled:opacity-50"
+              >
+                Load More
+              </button>
+            )}
           </div>
         </div>
       </div>

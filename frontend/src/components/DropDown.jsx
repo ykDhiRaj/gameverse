@@ -38,13 +38,13 @@ const DropDown = ({ options, onSelect, selectedOption, selectedOptions, label, m
   };
 
   return (
-    <div className="relative inline-block text-white" ref={dropdownRef}>
+    <div className="relative w-full sm:inline-block text-white" ref={dropdownRef}>
       <p className="mb-2 text-sm font-medium text-gray-300">{label}</p>
       <button
         onClick={toggleDropdown}
-        className="bg-[#202020] px-4 py-2 rounded-lg flex items-center justify-between min-w-[200px] hover:bg-[#2a2a2a] transition-all duration-300"
+        className="w-full sm:w-auto bg-[#202020] px-4 py-2 rounded-lg flex items-center justify-between min-w-[200px] hover:bg-[#2a2a2a] transition-all duration-300"
       >
-        <span>{getDisplayValue()}</span>
+        <span className="truncate">{getDisplayValue()}</span>
         <IoChevronDownOutline
           className={`ml-2 transform transition-transform duration-300 ${
             isOpen ? 'rotate-180' : ''
@@ -62,9 +62,9 @@ const DropDown = ({ options, onSelect, selectedOption, selectedOptions, label, m
                 className="px-4 py-2 hover:bg-[#2a2a2a] cursor-pointer transition-all duration-300 [animation:fadeIn_0.1s_ease-out_forwards] opacity-0 flex items-center justify-between"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <span>{option}</span>
+                <span className="truncate">{option}</span>
                 {multiple && selectedOptions?.includes(option) && (
-                  <IoCheckmark className="w-5 h-5 text-green-500" />
+                  <IoCheckmark className="w-5 h-5 text-green-500 flex-shrink-0 ml-2" />
                 )}
               </li>
             ))}

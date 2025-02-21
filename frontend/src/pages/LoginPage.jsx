@@ -106,9 +106,6 @@ function LoginPage() {
               <Shield className="w-4 h-4 text-zinc-500" />
               <span className="ml-2 text-sm text-zinc-400">Secured by encryption</span>
             </div>
-            <button type="button" className="text-sm text-zinc-400 hover:text-zinc-300 transition-colors duration-300">
-              Forgot password?
-            </button>
           </div>
 
           <button

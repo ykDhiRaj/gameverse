@@ -40,10 +40,10 @@ function SideBarComponent() {
   };
 
   return (
-    <div className="fixed top-24 left-7 max-h-[calc(100vh-6rem)] w-[14rem] bg-[#151515]">
+    <div className="md:fixed md:top-24 md:left-7 md:max-h-[calc(100vh-6rem)] w-full md:w-[14rem] bg-[#151515] overflow-x-auto">
       <div className="bg-[#202020] text-gray-100 px-4 py-6 flex flex-col transition-all duration-300 ease-in-out rounded-lg">
         <nav className="flex-1">
-          <ul className="space-y-2">
+          <ul className="space-y-2 whitespace-nowrap">
             {menuItems.map((item, index)=>(
               <li key={index}>
                 <button
@@ -52,7 +52,7 @@ function SideBarComponent() {
                     location.pathname === item.path ? 'bg-gray-700' : ''
                   }`}
                 >
-                  <item.icon className={`h-6 ${
+                  <item.icon className={`h-5 md:h-6 ${
                     location.pathname === item.path ? 'text-white' : 'text-gray-400'
                   }`} />
                   <span className={`ml-3 text-sm font-medium ${
