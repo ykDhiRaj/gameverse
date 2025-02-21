@@ -19,7 +19,7 @@ const AccountSettings = () => {
   useEffect(() => {
     const fetchAccountDetails = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/user/account-details", {
+        const response = await axios.get(`${import.meta.env.VITE_API_BASE_URL}/user/account-details`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
         
@@ -41,7 +41,7 @@ const AccountSettings = () => {
 
     try {
       const response = await axios.put(
-        "http://localhost:3000/user/update-username",
+        `${import.meta.env.VITE_API_BASE_URL}/user/update-username`,
         { username },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -59,7 +59,7 @@ const AccountSettings = () => {
 
     try {
       await axios.put(
-        "http://localhost:3000/user/update-password",
+        `${import.meta.env.VITE_API_BASE_URL}/user/update-password`,
         { currentPassword, newPassword },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -82,7 +82,7 @@ const AccountSettings = () => {
               onClick={async () => {
                 closeToast();
                 try {
-                  await axios.delete("http://localhost:3000/user/delete", {
+                  await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/delete`, {
                     headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
                   });
   

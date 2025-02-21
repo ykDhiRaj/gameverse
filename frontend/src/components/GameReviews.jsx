@@ -31,7 +31,7 @@ const GameReviews = () => {
   useEffect(() => {
     const fetchReviews = async () => {
       try {
-        const response = await fetch("http://localhost:3000/api/game-reviews");
+        const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/api/game-reviews`);
         if (!response.ok) throw new Error("Failed to fetch data");
         const data = await response.json();
         setReviews(data);

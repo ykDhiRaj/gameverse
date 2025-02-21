@@ -9,7 +9,7 @@ const FavoritesCard = ({ game, onRemove }) => {
 
   const handleRemove = async () => {
     try {
-      await axios.delete('http://localhost:3000/user/favorites/remove', {
+      await axios.delete(`${import.meta.env.VITE_API_BASE_URL}/user/favorites/remove`, {
         data: { gameId: id },
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });

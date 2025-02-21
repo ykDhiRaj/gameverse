@@ -17,7 +17,7 @@ const SignupPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-     axios.post('http://localhost:3000/user/signup', {
+     axios.post(`${import.meta.env.VITE_API_BASE_URL}/user/signup`, {
         username: username,
         email: email,
         password: password

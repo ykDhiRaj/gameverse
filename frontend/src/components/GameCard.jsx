@@ -26,7 +26,7 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
         return;
       }
       const response = await axios.post(
-        "http://localhost:3000/user/wishlist",
+        `${import.meta.env.VITE_API_BASE_URL}/user/wishlist`,
         { gameId: id },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
@@ -45,7 +45,7 @@ function GameCard({ game, isInWishlist, isInFavorites }) {
         return;
       }
       const response = await axios.post(
-        "http://localhost:3000/user/favorites",
+        `${import.meta.env.VITE_API_BASE_URL}/user/favorites`,
         { gameId: id },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );

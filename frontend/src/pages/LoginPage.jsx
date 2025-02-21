@@ -17,7 +17,7 @@ function LoginPage() {
  
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios.post('http://localhost:3000/user/login', {
+    axios.post(`${import.meta.env.VITE_API_BASE_URL}/user/login`, {
       email,
       password
     })
