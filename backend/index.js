@@ -11,6 +11,8 @@ const gameReviewRoutes = require("./routes/gameReviewRoutes");
 
 const app = express()
 
+const PORT = process.env.PORT || 4000;
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
@@ -34,6 +36,6 @@ then(()=>{
 })
 
 
-app.listen(process.env.PORT,()=>{
-    console.log(`Successfully connected and app is running at port ${process.env.PORT}`)
+app.listen(PORT,()=>{
+    console.log(`Successfully connected and app is running at port ${PORT}`)
 })
